@@ -1,17 +1,21 @@
 package dev.kush.backend.backend.configurations;
 
 import dev.kush.backend.backend.models.Account;
+import dev.kush.backend.backend.models.CreditCard;
 import dev.kush.backend.backend.models.Customer;
 import dev.kush.backend.backend.models.enums.AccountType;
+import dev.kush.backend.backend.repository.AccountRepository;
 import dev.kush.backend.backend.repository.CustomerRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.List;
+
 @Configuration
 public class SampleData {
     @Bean
-    CommandLineRunner commandLineRunner(CustomerRepository customerRepository){
+    CommandLineRunner commandLineRunner(CustomerRepository customerRepository, AccountRepository accountRepository){
         return args -> {
             Customer customer = new Customer();
             customer.setUserName("Kush Parsaniya");
@@ -22,6 +26,12 @@ public class SampleData {
 
             customer.setAccount(account);
 
+            CreditCard creditCard1 = new CreditCard("1234","123",25000L,23000L,"2023-11-01",account);
+            CreditCard creditCard2 = new CreditCard("8945","646",20000L,19000L,"2023-11-10",account);
+
+            account.setCreditCards(List.of(creditCard1,creditCard2));
+
+            accountRepository.save(account);
             customerRepository.save(customer);
         };
     }
