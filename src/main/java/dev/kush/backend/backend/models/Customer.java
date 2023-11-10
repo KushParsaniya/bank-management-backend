@@ -6,6 +6,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static jakarta.persistence.CascadeType.*;
 import static jakarta.persistence.GenerationType.IDENTITY;
@@ -25,6 +27,7 @@ public class Customer {
     @JsonBackReference
     private Account account;
 
+
     public Customer(String userName, String email, String password) {
         this.userName = userName;
         this.email = email;
@@ -37,4 +40,5 @@ public class Customer {
         this.password = password;
         this.account = account;
     }
+
 }

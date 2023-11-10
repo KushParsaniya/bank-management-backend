@@ -13,7 +13,10 @@ public class SampleData {
     @Bean
     CommandLineRunner commandLineRunner(CustomerRepository customerRepository){
         return args -> {
-            Customer customer = new Customer("Kush Parsaniya","kush@gmail.com","kush1234");
+            Customer customer = new Customer();
+            customer.setUserName("Kush Parsaniya");
+            customer.setEmail("kush@gmail.com");
+            customer.setPassword("kush1234");
 
             Account account = new Account(10000L, AccountType.SAVING,customer);
 
