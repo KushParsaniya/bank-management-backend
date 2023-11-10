@@ -16,14 +16,12 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 public class Customer {
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    @Column(name = "customer_id")
-    private Long customerId;
+    private Long id;
     private String userName;
     private String email;
     private String password;
 
     @OneToOne(mappedBy = "customer",cascade = CascadeType.ALL)
-    @JoinColumn(name = "account_id")
     @JsonBackReference
     private Account account;
 

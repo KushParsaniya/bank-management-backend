@@ -17,14 +17,13 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 public class Account {
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    @Column(name = "account_id")
-    private Long AccountId;
+    // account number
+    private Long id;
     private Long Balance;
     private AccountType accountType;
 
     @OneToOne(cascade = {DETACH,REFRESH,MERGE})
     @JsonManagedReference
-    @JoinColumn(name = "customer_id",referencedColumnName = "customer_id")
     private Customer customer;
 
     public Account(Long balance, AccountType accountType, Customer customer) {
