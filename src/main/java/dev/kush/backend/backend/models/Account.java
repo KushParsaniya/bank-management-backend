@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import dev.kush.backend.backend.models.enums.AccountType;
 import dev.kush.backend.backend.models.features.CreditCard;
 import dev.kush.backend.backend.models.features.DebitCard;
+import dev.kush.backend.backend.models.features.Loan;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -39,6 +40,10 @@ public class Account {
     @JsonBackReference
     private List<DebitCard> debitCards;
 
+    @OneToMany(mappedBy = "account",cascade = ALL)
+    @JsonBackReference
+    private List<Loan> loans;
+
     public Account(Long balance, AccountType accountType, Customer customer) {
         Balance = balance;
         this.accountType = accountType;
@@ -65,4 +70,15 @@ public class Account {
         this.creditCards = creditCards;
         this.debitCards = debitCards;
     }
+
+    public Account(Long balance, AccountType accountType, Customer customer, List<CreditCard> creditCards, List<DebitCard> debitCards, List<Loan> loans) {
+        Balance = balance;
+        this.accountType = accountType;
+        this.customer = customer;
+        this.creditCards = creditCards;
+        this.debitCards = debitCards;
+        this.loans = loans;
+    }
+
+
 }

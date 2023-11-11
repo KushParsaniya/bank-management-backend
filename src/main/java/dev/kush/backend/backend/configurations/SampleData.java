@@ -1,10 +1,12 @@
 package dev.kush.backend.backend.configurations;
 
 import dev.kush.backend.backend.models.Account;
+import dev.kush.backend.backend.models.enums.LoanType;
 import dev.kush.backend.backend.models.features.CreditCard;
 import dev.kush.backend.backend.models.Customer;
 import dev.kush.backend.backend.models.enums.AccountType;
 import dev.kush.backend.backend.models.features.DebitCard;
+import dev.kush.backend.backend.models.features.Loan;
 import dev.kush.backend.backend.repository.AccountRepository;
 import dev.kush.backend.backend.repository.CustomerRepository;
 import org.springframework.boot.CommandLineRunner;
@@ -33,8 +35,12 @@ public class SampleData {
             DebitCard debitCard1 = new DebitCard("8945","143","2025-06-18",account);
             DebitCard debitCard2 = new DebitCard("5789","158","2025-01-24",account);
 
+            Loan loan1 = new Loan(LoanType.HOME,100000L,3.5F,account);
+            Loan loan2 = new Loan(LoanType.PERSONAL,10000L,2.5F,account);
+
             account.setCreditCards(List.of(creditCard1,creditCard2));
             account.setDebitCards(List.of(debitCard1,debitCard2));
+            account.setLoans(List.of(loan1,loan2));
 
 
             accountRepository.save(account);
