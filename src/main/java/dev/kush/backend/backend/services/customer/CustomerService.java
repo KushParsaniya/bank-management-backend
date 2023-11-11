@@ -9,4 +9,6 @@ public interface CustomerService {
     ResponseEntity<SendDetailWrapper> login(LoginCustomerWrapper loginCustomer);
 
     ResponseEntity<String> create(SignUpDetailWrapper signUpDetailWrapper);
+
+    ResponseEntity<String> deleteCustomer(LoginCustomerWrapper loginCustomerWrapper);
 }

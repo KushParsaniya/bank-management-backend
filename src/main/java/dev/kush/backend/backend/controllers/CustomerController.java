@@ -36,4 +36,11 @@ public class CustomerController {
         return customerService.create(signUpDetailWrapper);
     }
 
+    @CrossOrigin(origins = "http://localhost:3000/",allowedHeaders = "*")
+    @DeleteMapping("/delete")
+    public ResponseEntity<String> delete(@RequestBody LoginCustomerWrapper loginCustomerWrapper){
+        return customerService.deleteCustomer(loginCustomerWrapper);
+    }
+
+
 }

@@ -112,4 +112,26 @@ public class CustomerServiceImpl implements CustomerService{
         }
         return new ResponseEntity<>("error", HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @Override
+    public ResponseEntity<String> deleteCustomer(LoginCustomerWrapper loginCustomerWrapper) {
+        try {
+            Customer customer = customerRepository.findCustomerByEmail(loginCustomerWrapper.getEmail()).orElse(null);
+
+            if (customer == null) {
+                return new ResponseEntity<>("customer with email doesn't exist.", HttpStatus.NOT_FOUND);
+            }
+
+            if (!customer.getPassword().equals(loginCustomerWrapper.getPassword())){
+                return new ResponseEntity<>("please, Enter valid credentials ",HttpStatus.UNAUTHORIZED);
+            }
+            customerRepository.delete(customer);
+            return new ResponseEntity<>("successfully deleted",HttpStatus.OK);
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>("error", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }
