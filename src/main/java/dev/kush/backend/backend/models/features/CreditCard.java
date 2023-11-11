@@ -1,6 +1,7 @@
-package dev.kush.backend.backend.models;
+package dev.kush.backend.backend.models.features;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import dev.kush.backend.backend.models.Account;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
