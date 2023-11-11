@@ -2,9 +2,11 @@ package dev.kush.backend.backend.services.customer;
 
 import dev.kush.backend.backend.models.Account;
 import dev.kush.backend.backend.models.Customer;
+import dev.kush.backend.backend.models.enums.AccountType;
 import dev.kush.backend.backend.models.features.Transaction;
 import dev.kush.backend.backend.models.wrapper.LoginCustomerWrapper;
 import dev.kush.backend.backend.models.wrapper.SendDetailWrapper;
+import dev.kush.backend.backend.models.wrapper.SignUpDetailWrapper;
 import dev.kush.backend.backend.models.wrapper.TransactionWrapper;
 import dev.kush.backend.backend.repository.AccountRepository;
 import dev.kush.backend.backend.repository.CreditCardRepository;
@@ -17,6 +19,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static dev.kush.backend.backend.models.enums.AccountType.CURRENT;
 
 @Service
 public class CustomerServiceImpl implements CustomerService{
@@ -67,7 +71,6 @@ public class CustomerServiceImpl implements CustomerService{
                 ));
             }
 
-
             // creating a wrapper to send to frontend which is SendDetailWrapper
 
             SendDetailWrapper sendDetailWrapper = new SendDetailWrapper(
@@ -85,5 +88,28 @@ public class CustomerServiceImpl implements CustomerService{
             e.printStackTrace();
         }
         return new ResponseEntity<>(new SendDetailWrapper(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @Override
+    public ResponseEntity<String> create(SignUpDetailWrapper signUpDetailWrapper) {
+        try{
+            Customer customer = new Customer(
+                    signUpDetailWrapper.getUserName(),
+                    signUpDetailWrapper.getEmail(),
+                    signUpDetailWrapper.getPassword()
+            );
+
+            Account account = new Account(
+                0L, signUpDetailWrapper.getAccountType(),customer
+            );
+            customer.setAccount(account);
+
+            customerRepository.save(customer);
+            return new ResponseEntity<>("successfully created",HttpStatus.OK);
+
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>("error", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

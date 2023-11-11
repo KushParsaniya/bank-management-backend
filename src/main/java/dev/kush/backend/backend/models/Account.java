@@ -26,7 +26,7 @@ public class Account {
     @GeneratedValue(strategy = IDENTITY)
     // account number
     private Long id;
-    private Long Balance;
+    private Long balance;
     private AccountType accountType;
 
     @OneToOne(cascade = ALL)
@@ -50,26 +50,20 @@ public class Account {
     private List<Transaction> transactions;
 
     public Account(Long balance, AccountType accountType, Customer customer) {
-        Balance = balance;
+        this.balance = balance;
         this.accountType = accountType;
         this.customer = customer;
     }
 
-    public Account(Long balance, AccountType accountType) {
-        Balance = balance;
-        this.accountType = accountType;
-    }
-
-
-    public Account(Long balance, AccountType accountType, Customer customer, List<DebitCard> debitCards) {
-        Balance = balance;
+    public Account(Long balance, AccountType accountType, Customer customer, List<CreditCard> creditCards) {
+        this.balance = balance;
         this.accountType = accountType;
         this.customer = customer;
-        this.debitCards = debitCards;
+        this.creditCards = creditCards;
     }
 
     public Account(Long balance, AccountType accountType, Customer customer, List<CreditCard> creditCards, List<DebitCard> debitCards) {
-        Balance = balance;
+        this.balance = balance;
         this.accountType = accountType;
         this.customer = customer;
         this.creditCards = creditCards;
@@ -77,7 +71,7 @@ public class Account {
     }
 
     public Account(Long balance, AccountType accountType, Customer customer, List<CreditCard> creditCards, List<DebitCard> debitCards, List<Loan> loans) {
-        Balance = balance;
+        this.balance = balance;
         this.accountType = accountType;
         this.customer = customer;
         this.creditCards = creditCards;
@@ -86,7 +80,7 @@ public class Account {
     }
 
     public Account(Long balance, AccountType accountType, Customer customer, List<CreditCard> creditCards, List<DebitCard> debitCards, List<Loan> loans, List<Transaction> transactions) {
-        Balance = balance;
+        this.balance = balance;
         this.accountType = accountType;
         this.customer = customer;
         this.creditCards = creditCards;
