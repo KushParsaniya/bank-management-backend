@@ -6,6 +6,7 @@ import dev.kush.backend.backend.models.enums.AccountType;
 import dev.kush.backend.backend.models.features.CreditCard;
 import dev.kush.backend.backend.models.features.DebitCard;
 import dev.kush.backend.backend.models.features.Loan;
+import dev.kush.backend.backend.models.features.Transaction;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -44,6 +45,10 @@ public class Account {
     @JsonBackReference
     private List<Loan> loans;
 
+    @OneToMany(mappedBy = "account",cascade = ALL)
+    @JsonBackReference
+    private List<Transaction> transactions;
+
     public Account(Long balance, AccountType accountType, Customer customer) {
         Balance = balance;
         this.accountType = accountType;
@@ -80,5 +85,13 @@ public class Account {
         this.loans = loans;
     }
 
-
+    public Account(Long balance, AccountType accountType, Customer customer, List<CreditCard> creditCards, List<DebitCard> debitCards, List<Loan> loans, List<Transaction> transactions) {
+        Balance = balance;
+        this.accountType = accountType;
+        this.customer = customer;
+        this.creditCards = creditCards;
+        this.debitCards = debitCards;
+        this.loans = loans;
+        this.transactions = transactions;
+    }
 }

@@ -2,11 +2,13 @@ package dev.kush.backend.backend.configurations;
 
 import dev.kush.backend.backend.models.Account;
 import dev.kush.backend.backend.models.enums.LoanType;
+import dev.kush.backend.backend.models.enums.TransactionType;
 import dev.kush.backend.backend.models.features.CreditCard;
 import dev.kush.backend.backend.models.Customer;
 import dev.kush.backend.backend.models.enums.AccountType;
 import dev.kush.backend.backend.models.features.DebitCard;
 import dev.kush.backend.backend.models.features.Loan;
+import dev.kush.backend.backend.models.features.Transaction;
 import dev.kush.backend.backend.repository.AccountRepository;
 import dev.kush.backend.backend.repository.CustomerRepository;
 import org.springframework.boot.CommandLineRunner;
@@ -14,6 +16,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.List;
+
+import static dev.kush.backend.backend.models.enums.TransactionType.*;
 
 @Configuration
 public class SampleData {
@@ -38,9 +42,15 @@ public class SampleData {
             Loan loan1 = new Loan(LoanType.HOME,100000L,3.5F,account);
             Loan loan2 = new Loan(LoanType.PERSONAL,10000L,2.5F,account);
 
+            Transaction t1 = new Transaction("2023-11-01","12:56:08.830293600" , DEPOSIT,2000L,account);
+            Transaction t2 = new Transaction("2023-10-27","9:36:01.188119",WITHDRAW,5000L,account);
+            Transaction t3 = new Transaction("2023-10-15","21:12:02.753475",INTEREST,200L,account);
+            Transaction t4 = new Transaction("2023-09-29","18:53:02.7534",TRANSFER,500L,account);
+
             account.setCreditCards(List.of(creditCard1,creditCard2));
             account.setDebitCards(List.of(debitCard1,debitCard2));
             account.setLoans(List.of(loan1,loan2));
+            account.setTransactions(List.of(t1,t2,t3,t4));
 
 
             accountRepository.save(account);
