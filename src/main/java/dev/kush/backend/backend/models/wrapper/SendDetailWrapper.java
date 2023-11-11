@@ -18,8 +18,6 @@ public class SendDetailWrapper {
     private Long accountId;
     private Long Balance;
     private AccountType type;
-    private List<CreditCardWrapper> creditCards;
-    private List<DebitCardWrapper> debitCards;
-    private  List<LoanWrapper> loans;
     private List<TransactionWrapper> transactions;
+
 }
