@@ -2,17 +2,22 @@ package dev.kush.backend.backend.services.account;
 
 import dev.kush.backend.backend.models.Account;
 import dev.kush.backend.backend.models.Customer;
+import dev.kush.backend.backend.models.enums.TransactionType;
 import dev.kush.backend.backend.models.features.Transaction;
 import dev.kush.backend.backend.models.wrapper.SendDetailWrapper;
 import dev.kush.backend.backend.models.wrapper.TransactionWrapper;
+import dev.kush.backend.backend.models.wrapper.TransferMoneyWrapper;
 import dev.kush.backend.backend.repository.AccountRepository;
 import dev.kush.backend.backend.repository.CustomerRepository;
 import dev.kush.backend.backend.repository.TransactionRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -80,5 +85,55 @@ public class AccountServiceImpl implements AccountService{
             e.printStackTrace();
         }
         return new ResponseEntity<>(new SendDetailWrapper(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @Override
+    @Transactional
+    public ResponseEntity<String> transfer(TransferMoneyWrapper transferMoneyWrapper) {
+        try {
+            // find sender account by senderAccountID
+            Account senderAccount = accountRepository.findById(transferMoneyWrapper.getSenderId()).orElse(null);
+            if (senderAccount == null) {
+                return new ResponseEntity<>("sender account not found", HttpStatus.NOT_FOUND);
+            }
+            if (senderAccount.getBalance() < transferMoneyWrapper.getAmount()){
+                return new ResponseEntity<>("insufficient balance.", HttpStatus.BAD_REQUEST);
+            }
+
+
+            // find receiver account by receiverAccountID
+            Account receiverAccount = accountRepository.findById(transferMoneyWrapper.getReceiverId()).orElse(null);
+
+            if (receiverAccount == null) {
+                return new ResponseEntity<>("receiver account not found", HttpStatus.NOT_FOUND);
+            }
+
+            // money deduct from sender account
+            senderAccount.setBalance(senderAccount.getBalance() - transferMoneyWrapper.getAmount());
+
+            // add money to receiver account
+            receiverAccount.setBalance(receiverAccount.getBalance() + transferMoneyWrapper.getAmount());
+
+            // now we have to add this to transfer table for both sender and receiver
+
+            Transaction senderTransaction = new Transaction(LocalDate.now().toString(),
+                    LocalTime.now().toString(),
+                    TransactionType.TRANSFER,
+                    transferMoneyWrapper.getAmount(),
+                    senderAccount);
+
+            Transaction receiverTransaction = new Transaction(LocalDate.now().toString(),
+                    LocalTime.now().toString(),
+                    TransactionType.DEPOSIT,
+                    transferMoneyWrapper.getAmount(),
+                    receiverAccount);
+
+            transactionRepository.saveAll(List.of(senderTransaction,receiverTransaction));
+            return new ResponseEntity<>("successfully transferred",HttpStatus.OK);
+
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>("error", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
