@@ -1,0 +1,56 @@
+package dev.kush.backend.backend.services.cards.creditCard;
+
+import dev.kush.backend.backend.models.Account;
+import dev.kush.backend.backend.models.features.CreditCard;
+import dev.kush.backend.backend.repository.AccountRepository;
+import dev.kush.backend.backend.repository.CreditCardRepository;
+import dev.kush.backend.backend.services.cards.CardGeneratorService;
+import dev.kush.backend.backend.services.cards.CardGeneratorServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class CreditCardServiceImpl implements CreditCardService{
+
+    private final CardGeneratorService cardGeneratorService;
+    private final CreditCardRepository creditCardRepository;
+    private final AccountRepository accountRepository;
+
+    @Autowired
+    public CreditCardServiceImpl(CardGeneratorServiceImpl cardGeneratorService, CreditCardRepository creditCardRepository, AccountRepository accountRepository) {
+        this.cardGeneratorService = cardGeneratorService;
+        this.creditCardRepository = creditCardRepository;
+        this.accountRepository = accountRepository;
+    }
+
+    @Override
+    public ResponseEntity<String> createCreditCard(Long accountId) {
+        try {
+            Account account = accountRepository.findById(accountId).orElse(null);
+
+            if (account == null) {
+                return new ResponseEntity<>("Account not found", HttpStatus.NOT_FOUND);
+            }
+
+            CreditCard creditCard = new CreditCard(
+                   cardGeneratorService.generateCardNumber(),
+                    cardGeneratorService.generateCVV(),
+                    25000L,
+                    25000L,
+                    "2025-08-23",
+                    account
+            );
+            account.setCreditCards(List.of(creditCard));
+            creditCardRepository.save(creditCard);
+            return new ResponseEntity<>("succesfully created",HttpStatus.OK);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>("error", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+}
