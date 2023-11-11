@@ -19,6 +19,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 import static dev.kush.backend.backend.models.enums.AccountType.CURRENT;
 
@@ -93,6 +95,13 @@ public class CustomerServiceImpl implements CustomerService{
     @Override
     public ResponseEntity<String> create(SignUpDetailWrapper signUpDetailWrapper) {
         try{
+
+            // check if email already exist in our database
+            Customer customerOptional = customerRepository.findCustomerByEmail(signUpDetailWrapper.getEmail()).orElse(null);
+            if (!Objects.isNull(customerOptional)){
+                return new ResponseEntity<>("customer with email already exists.",HttpStatus.CONFLICT);
+            }
+
             Customer customer = new Customer(
                     signUpDetailWrapper.getUserName(),
                     signUpDetailWrapper.getEmail(),

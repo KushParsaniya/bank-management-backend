@@ -38,10 +38,19 @@ public class DebitCardServiceImpl implements DebitCardService{
                 return new ResponseEntity<>("Account not found", HttpStatus.NOT_FOUND);
             }
 
+            String cardNumber = cardGeneratorService.generateCardNumber();
+            DebitCard cardOptional = debitCardRepository.findByCardNumber(cardNumber).orElse(null);
+
+            // check if card with cardNumber exists
+            while(cardOptional != null){
+                cardNumber = cardGeneratorService.generateCardNumber();
+                cardOptional = debitCardRepository.findByCardNumber(cardNumber).orElse(null);
+            }
+
             DebitCard debitCard = new DebitCard(
-                    cardGeneratorService.generateCardNumber(),
+                    cardNumber,
                     cardGeneratorService.generateCVV(),
-                    "2025-08-23",
+                    cardGeneratorService.generateExpirationDate(),
                     account
             );
             account.setDebitCards(List.of(debitCard));

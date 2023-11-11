@@ -36,12 +36,22 @@ public class CreditCardServiceImpl implements CreditCardService{
                 return new ResponseEntity<>("Account not found", HttpStatus.NOT_FOUND);
             }
 
+            String cardNumber = cardGeneratorService.generateCardNumber();
+            CreditCard cardOptional = creditCardRepository.findByCardNumber(cardNumber).orElse(null);
+
+            // check if card with cardNumber exists
+            while(cardOptional != null){
+                cardNumber = cardGeneratorService.generateCardNumber();
+                cardOptional = creditCardRepository.findByCardNumber(cardNumber).orElse(null);
+            }
+
+
             CreditCard creditCard = new CreditCard(
-                   cardGeneratorService.generateCardNumber(),
+                    cardNumber,
                     cardGeneratorService.generateCVV(),
                     25000L,
                     25000L,
-                    "2025-08-23",
+                    cardGeneratorService.generateExpirationDate(),
                     account
             );
             account.setCreditCards(List.of(creditCard));

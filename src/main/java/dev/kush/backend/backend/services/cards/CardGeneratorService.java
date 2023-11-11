@@ -4,4 +4,6 @@ public interface CardGeneratorService {
     String generateCardNumber();
     String generateCVV();
 
+    String generateExpirationDate();
+
 }

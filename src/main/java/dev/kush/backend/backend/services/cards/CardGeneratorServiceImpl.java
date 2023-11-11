@@ -2,6 +2,7 @@ package dev.kush.backend.backend.services.cards;
 
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Random;
 
 @Service
@@ -21,5 +22,12 @@ public class CardGeneratorServiceImpl implements CardGeneratorService {
         Random random = new Random();
         int cvv = 100 + random.nextInt(900);  // Generate a random 3-digit CVV
         return String.valueOf(cvv);
+    }
+
+    @Override
+    public String generateExpirationDate() {
+        LocalDate currentDate = LocalDate.now();
+        LocalDate expiryDate = currentDate.plusYears(3); // Generates an expiry date 3 years in the future
+        return expiryDate.toString();
     }
 }
