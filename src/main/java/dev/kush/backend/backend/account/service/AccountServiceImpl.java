@@ -40,6 +40,9 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public ResponseEntity<SendDetailWrapper> getByAccountId(Long accountId) {
         try {
+            if (accountId == null) {
+                return new ResponseEntity<>(new SendDetailWrapper(), HttpStatus.BAD_REQUEST);
+            }
             // find account by accountId
             Account account = accountRepository.findById(accountId).orElse(null);
             if (account == null) {
