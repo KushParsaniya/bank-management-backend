@@ -1,23 +1,22 @@
 package dev.kush.backend.backend.configurations;
 
-import dev.kush.backend.backend.models.Account;
-import dev.kush.backend.backend.models.enums.LoanType;
-import dev.kush.backend.backend.models.enums.TransactionType;
-import dev.kush.backend.backend.models.features.CreditCard;
-import dev.kush.backend.backend.models.Customer;
-import dev.kush.backend.backend.models.enums.AccountType;
-import dev.kush.backend.backend.models.features.DebitCard;
-import dev.kush.backend.backend.models.features.Loan;
-import dev.kush.backend.backend.models.features.Transaction;
-import dev.kush.backend.backend.repository.AccountRepository;
-import dev.kush.backend.backend.repository.CustomerRepository;
+import dev.kush.backend.backend.account.models.Account;
+import dev.kush.backend.backend.loans.model.LoanType;
+import dev.kush.backend.backend.cards.creditCards.model.CreditCard;
+import dev.kush.backend.backend.customer.model.Customer;
+import dev.kush.backend.backend.account.models.AccountType;
+import dev.kush.backend.backend.cards.debitCards.model.DebitCard;
+import dev.kush.backend.backend.loans.model.Loan;
+import dev.kush.backend.backend.transactions.model.Transaction;
+import dev.kush.backend.backend.account.repository.AccountRepository;
+import dev.kush.backend.backend.customer.repository.CustomerRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.List;
 
-import static dev.kush.backend.backend.models.enums.TransactionType.*;
+import static dev.kush.backend.backend.transactions.model.TransactionType.*;
 
 @Configuration
 public class SampleData {
