@@ -21,11 +21,13 @@ public class CreditCardController {
         this.creditCardService = creditCardService;
     }
 
+    @CrossOrigin(origins = "http://localhost:3000/", allowedHeaders = "*")
     @GetMapping("createCreditCard/{accountId}")
     public ResponseEntity<String> createCreditCard(@PathVariable Long accountId){
         return creditCardService.createCreditCard(accountId);
     }
 
+    @CrossOrigin(origins = "http://localhost:3000/", allowedHeaders = "*")
     @GetMapping("getCreditCard/{accountId}")
     public ResponseEntity<List<CreditCardWrapper>> getCreditCard(@PathVariable Long accountId){
         return creditCardService.getCreditCard(accountId);

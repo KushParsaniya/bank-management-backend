@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 @NoArgsConstructor
 public class CreditCardWrapper {
     private String cardNumber;
-    private String expiryDate;
+    private String expirationDate;
     private Long creditLimit;
     private Long usedCreditLimit;
     private String cvv;

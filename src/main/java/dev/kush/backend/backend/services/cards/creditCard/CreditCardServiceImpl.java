@@ -72,7 +72,7 @@ public class CreditCardServiceImpl implements CreditCardService{
             List<CreditCard> creditCards = creditCardRepository.findAllReferenceByAccountId(accountId).orElse(List.of());
 
             if (creditCards.isEmpty()) {
-                return new ResponseEntity<>(List.of(), HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(List.of(), HttpStatus.OK);
             }
 
             List<CreditCardWrapper> creditCardWrappers = new ArrayList<>();
