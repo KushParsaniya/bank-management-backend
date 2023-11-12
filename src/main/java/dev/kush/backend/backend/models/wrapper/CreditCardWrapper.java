@@ -14,4 +14,5 @@ public class CreditCardWrapper {
     private String expiryDate;
     private Long creditLimit;
     private Long usedCreditLimit;
+    private String cvv;
 }

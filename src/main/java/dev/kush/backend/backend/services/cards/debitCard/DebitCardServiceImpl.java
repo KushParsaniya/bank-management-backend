@@ -3,6 +3,8 @@ package dev.kush.backend.backend.services.cards.debitCard;
 import dev.kush.backend.backend.models.Account;
 import dev.kush.backend.backend.models.features.CreditCard;
 import dev.kush.backend.backend.models.features.DebitCard;
+import dev.kush.backend.backend.models.wrapper.CreditCardWrapper;
+import dev.kush.backend.backend.models.wrapper.DebitCardWrapper;
 import dev.kush.backend.backend.repository.AccountRepository;
 import dev.kush.backend.backend.repository.CreditCardRepository;
 import dev.kush.backend.backend.repository.DebitCardRepository;
@@ -12,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -62,4 +65,34 @@ public class DebitCardServiceImpl implements DebitCardService{
         }
         return new ResponseEntity<>("error", HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @Override
+    public ResponseEntity<List<DebitCardWrapper>> getDebitCard(Long accountId) {
+        try {
+            List<DebitCard> debitCards = debitCardRepository.findAllReferenceByAccountId(accountId).orElse(List.of());
+
+            if (debitCards.isEmpty()) {
+                return new ResponseEntity<>(List.of(), HttpStatus.NOT_FOUND);
+            }
+
+            List<DebitCardWrapper> debitCardWrappers = new ArrayList<>();
+
+            for(DebitCard debitCard : debitCards){
+                debitCardWrappers.add(
+                        new DebitCardWrapper(
+                                debitCard.getCardNumber(),
+                                debitCard.getExpirationDate(),
+                                debitCard.getCvv()
+                        )
+                );
+            }
+            return new ResponseEntity<>(debitCardWrappers,HttpStatus.OK);
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(List.of(),HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
 }

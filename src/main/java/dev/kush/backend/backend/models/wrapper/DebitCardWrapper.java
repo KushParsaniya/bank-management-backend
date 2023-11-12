@@ -12,4 +12,5 @@ import lombok.Setter;
 public class DebitCardWrapper {
     private String cardNumber;
     private String expirationDate;
+    private String cvv;
 }

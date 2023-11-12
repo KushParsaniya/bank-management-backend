@@ -2,6 +2,7 @@ package dev.kush.backend.backend.services.cards.creditCard;
 
 import dev.kush.backend.backend.models.Account;
 import dev.kush.backend.backend.models.features.CreditCard;
+import dev.kush.backend.backend.models.wrapper.CreditCardWrapper;
 import dev.kush.backend.backend.repository.AccountRepository;
 import dev.kush.backend.backend.repository.CreditCardRepository;
 import dev.kush.backend.backend.services.cards.CardGeneratorService;
@@ -11,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -61,6 +63,35 @@ public class CreditCardServiceImpl implements CreditCardService{
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return new ResponseEntity<>("error", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("error", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @Override
+    public ResponseEntity<List<CreditCardWrapper>> getCreditCard(Long accountId) {
+        try {
+            List<CreditCard> creditCards = creditCardRepository.findAllReferenceByAccountId(accountId).orElse(List.of());
+
+            if (creditCards.isEmpty()) {
+                return new ResponseEntity<>(List.of(), HttpStatus.NOT_FOUND);
+            }
+
+            List<CreditCardWrapper> creditCardWrappers = new ArrayList<>();
+
+            for(CreditCard creditCard : creditCards){
+                creditCardWrappers.add(new CreditCardWrapper(
+                        creditCard.getCardNumber(),
+                        creditCard.getExpirationDate(),
+                        creditCard.getCreditLimit(),
+                        creditCard.getCreditLimit() - creditCard.getRemainingLimit(),
+                        creditCard.getCvv()
+                ));
+            }
+            return new ResponseEntity<>(creditCardWrappers,HttpStatus.OK);
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(List.of(),HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
