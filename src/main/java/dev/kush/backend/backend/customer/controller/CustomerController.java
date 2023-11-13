@@ -22,7 +22,7 @@ public class CustomerController {
 
 
     // login to account
-    @CrossOrigin(origins = "http://localhost:3000/",allowedHeaders = "*")
+//    @CrossOrigin(origins = "http://localhost:3000/",allowedHeaders = "*")
     @PostMapping("/login")
     public ResponseEntity<SendDetailWrapper> login(@RequestBody LoginCustomerWrapper loginCustomer){
         return customerService.login(loginCustomer);
@@ -30,14 +30,14 @@ public class CustomerController {
 
 
     // create customer and account
-    @CrossOrigin(origins = "http://localhost:3000/",allowedHeaders = "*")
+
     @PostMapping("/create")
     public ResponseEntity<String> create(@RequestBody SignUpDetailWrapper signUpDetailWrapper){
         return customerService.create(signUpDetailWrapper);
     }
 
     // delete customer and account
-    @CrossOrigin(origins = "http://localhost:3000/",allowedHeaders = "*")
+
     @DeleteMapping("/delete")
     public ResponseEntity<String> delete(@RequestBody LoginCustomerWrapper loginCustomerWrapper){
         return customerService.deleteCustomer(loginCustomerWrapper);

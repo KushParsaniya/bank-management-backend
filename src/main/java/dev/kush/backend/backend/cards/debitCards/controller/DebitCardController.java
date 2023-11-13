@@ -21,13 +21,12 @@ public class DebitCardController {
         this.debitCardService = debitCardService;
     }
 
-    @CrossOrigin(origins = "http://localhost:3000/", allowedHeaders = "*")
+
     @GetMapping("createDebitCard/{accountId}")
     public ResponseEntity<String> createDebitCard(@PathVariable Long accountId){
         return debitCardService.createDebitCard(accountId);
     }
 
-    @CrossOrigin(origins = "http://localhost:3000/", allowedHeaders = "*")
     @GetMapping("getDebitCard/{accountId}")
     public ResponseEntity<List<DebitCardWrapper>> getDebitCard(@PathVariable Long accountId){
         return debitCardService.getDebitCard(accountId);

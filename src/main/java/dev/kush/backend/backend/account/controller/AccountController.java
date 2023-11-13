@@ -20,15 +20,17 @@ public class AccountController {
     }
 
 
-    @CrossOrigin(origins = "http://localhost:3000/",allowedHeaders = "*")
+
     @GetMapping("/getByAccountId/{accountId}")
     public ResponseEntity<SendDetailWrapper> getByAccountId(@PathVariable Long accountId) {
         return accountService.getByAccountId(accountId);
     }
 
-    @CrossOrigin(origins = "http://localhost:3000/", allowedHeaders = "*")
+
     @PutMapping("/transfer")
     public ResponseEntity<String> transfer(@RequestBody TransferMoneyWrapper transferMoneyWrapper) {
         return accountService.transfer(transferMoneyWrapper);
     }
+
+
 }
