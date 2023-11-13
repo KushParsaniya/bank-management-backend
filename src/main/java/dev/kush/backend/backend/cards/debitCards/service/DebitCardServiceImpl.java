@@ -77,8 +77,8 @@ public class DebitCardServiceImpl implements DebitCardService{
             for(DebitCard debitCard : debitCards){
                 debitCardWrappers.add(
                         new DebitCardWrapper(
-                                debitCard.getCardNumber(),
-                                debitCard.getExpirationDate(),
+                                debitCard.getCardNumber().replaceAll("(.{4})", "$1 "),
+                                debitCard.getExpirationDate().substring(0,7),
                                 debitCard.getCvv()
                         )
                 );

@@ -100,7 +100,7 @@ public class AccountServiceImpl implements AccountService {
                 return new ResponseEntity<>("sender account not found", HttpStatus.NOT_FOUND);
             }
             if (senderAccount.getBalance() < transferMoneyWrapper.getAmount()){
-                return new ResponseEntity<>("insufficient balance.", HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>("insufficient balance.", HttpStatus.UNPROCESSABLE_ENTITY);
             }
 
 
@@ -109,6 +109,10 @@ public class AccountServiceImpl implements AccountService {
 
             if (receiverAccount == null) {
                 return new ResponseEntity<>("receiver account not found", HttpStatus.NOT_FOUND);
+            }
+
+            if (senderAccount.getId() == receiverAccount.getId()) {
+                return new ResponseEntity<>("sender and receiver cannot be the same account", HttpStatus.BAD_REQUEST);
             }
 
             // money deduct from sender account

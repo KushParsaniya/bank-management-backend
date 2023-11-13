@@ -79,8 +79,9 @@ public class CreditCardServiceImpl implements CreditCardService{
 
             for(CreditCard creditCard : creditCards){
                 creditCardWrappers.add(new CreditCardWrapper(
-                        creditCard.getCardNumber(),
-                        creditCard.getExpirationDate(),
+                        // used this to format credit card number
+                        creditCard.getCardNumber().replaceAll("(.{4})", "$1 "),
+                        creditCard.getExpirationDate().substring(0,7),
                         creditCard.getCreditLimit(),
                         creditCard.getCreditLimit() - creditCard.getRemainingLimit(),
                         creditCard.getCvv()
