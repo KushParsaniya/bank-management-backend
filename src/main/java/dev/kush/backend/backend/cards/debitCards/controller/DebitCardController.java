@@ -2,6 +2,7 @@ package dev.kush.backend.backend.cards.debitCards.controller;
 
 
 import dev.kush.backend.backend.cards.debitCards.model.DebitCardWrapper;
+import dev.kush.backend.backend.cards.debitCards.model.SendDebitCardReqWrapper;
 import dev.kush.backend.backend.cards.debitCards.service.DebitCardService;
 import dev.kush.backend.backend.cards.debitCards.service.DebitCardServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,11 @@ public class DebitCardController {
     @DeleteMapping("deleteRequestDebitCard/{requestId}")
     public ResponseEntity<String> deleteReqDebitCard(@PathVariable Long requestId){
         return debitCardService.deleteReqDebitCard(requestId);
+    }
+
+    @GetMapping("getAllDebitCardsRequests")
+    public ResponseEntity<List<SendDebitCardReqWrapper>> getAllReqDebitCards(){
+        return debitCardService.getAllReqDebitCards();
     }
 
 

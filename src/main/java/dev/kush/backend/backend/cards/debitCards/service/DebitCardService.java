@@ -1,6 +1,7 @@
 package dev.kush.backend.backend.cards.debitCards.service;
 
 import dev.kush.backend.backend.cards.debitCards.model.DebitCardWrapper;
+import dev.kush.backend.backend.cards.debitCards.model.SendDebitCardReqWrapper;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -13,4 +14,6 @@ public interface DebitCardService {
     ResponseEntity<String> requestDebitCard(Long accountId);
 
     ResponseEntity<String> deleteReqDebitCard(Long requestId);
+
+    ResponseEntity<List<SendDebitCardReqWrapper>> getAllReqDebitCards();
 }

@@ -2,13 +2,16 @@ package dev.kush.backend.backend.cards.debitCards.service;
 
 import dev.kush.backend.backend.account.models.Account;
 import dev.kush.backend.backend.cards.creditCards.model.CreditCardRequest;
+import dev.kush.backend.backend.cards.creditCards.model.SendCreditCardReqWrapper;
 import dev.kush.backend.backend.cards.debitCards.model.DebitCard;
 import dev.kush.backend.backend.cards.debitCards.model.DebitCardRequest;
 import dev.kush.backend.backend.cards.debitCards.model.DebitCardWrapper;
 import dev.kush.backend.backend.account.repository.AccountRepository;
+import dev.kush.backend.backend.cards.debitCards.model.SendDebitCardReqWrapper;
 import dev.kush.backend.backend.cards.debitCards.repository.DebitCardRepository;
 import dev.kush.backend.backend.cards.debitCards.repository.DebitCardRequestRepository;
 import dev.kush.backend.backend.cards.service.CardGeneratorService;
+import dev.kush.backend.backend.customer.model.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -137,6 +140,46 @@ public class DebitCardServiceImpl implements DebitCardService {
         return new ResponseEntity<>("server error",HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    @Override
+    public ResponseEntity<List<SendDebitCardReqWrapper>> getAllReqDebitCards() {
+        try {
+            List<DebitCardRequest> debitCardRequests = debitCardRequestRepository.findAll();
+
+            if (debitCardRequests.isEmpty()) {
+                return new ResponseEntity<>(List.of(), HttpStatus.NOT_FOUND);
+            }
+
+            List<SendDebitCardReqWrapper> sendDebitCardReqWrappers = new ArrayList<>();
+
+
+            // we want to send this info to admins
+            for (DebitCardRequest debitCardRequest : debitCardRequests) {
+
+                Account account = debitCardRequest.getAccount();
+
+                if (account == null) {
+                    continue;
+                }
+                Customer customer = account.getCustomer();
+
+                if (customer == null) {
+                    continue;
+                }
+
+                sendDebitCardReqWrappers.add(new SendDebitCardReqWrapper(
+                        customer.getUserName(),
+                        customer.getEmail(),
+                        account.getId(),
+                        account.getBalance(),
+                        debitCardRequest.getId()));
+            }
+            return new ResponseEntity<>(sendDebitCardReqWrappers,HttpStatus.OK);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(List.of(),HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 
 
 }
