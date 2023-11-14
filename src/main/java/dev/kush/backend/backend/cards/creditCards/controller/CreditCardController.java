@@ -1,6 +1,7 @@
 package dev.kush.backend.backend.cards.creditCards.controller;
 
 import dev.kush.backend.backend.cards.creditCards.model.CreditCardWrapper;
+import dev.kush.backend.backend.cards.creditCards.model.SendCreditCardReqWrapper;
 import dev.kush.backend.backend.cards.creditCards.service.CreditCardService;
 import dev.kush.backend.backend.cards.creditCards.service.CreditCardServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,8 +38,15 @@ public class CreditCardController {
         return creditCardService.reqCreditCard(accountId);
     }
 
+//    @CrossOrigin(origins = "http://localhost:3000/",allowedHeaders = "*")
     @DeleteMapping("/deleteRequestCreditCard/{requestId}")
     public ResponseEntity<String> deleteRequestCreditCard(@PathVariable Long requestId){
         return creditCardService.deleteRequestCreditCard(requestId);
     }
+
+    @GetMapping("/getAllCreditCardsRequests")
+    public ResponseEntity<List<SendCreditCardReqWrapper>> getAllCreditCardsRequests(){
+        return creditCardService.getAllCreditCardsRequests();
+    }
+
 }

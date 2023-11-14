@@ -5,10 +5,12 @@ import dev.kush.backend.backend.cards.creditCards.model.CreditCard;
 import dev.kush.backend.backend.cards.creditCards.model.CreditCardRequest;
 import dev.kush.backend.backend.cards.creditCards.model.CreditCardWrapper;
 import dev.kush.backend.backend.account.repository.AccountRepository;
+import dev.kush.backend.backend.cards.creditCards.model.SendCreditCardReqWrapper;
 import dev.kush.backend.backend.cards.creditCards.repository.CreditCardRepository;
 import dev.kush.backend.backend.cards.creditCards.repository.CreditCardRequestRepository;
 import dev.kush.backend.backend.cards.service.CardGeneratorService;
 import dev.kush.backend.backend.cards.service.CardGeneratorServiceImpl;
+import dev.kush.backend.backend.customer.model.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -113,7 +115,7 @@ public class CreditCardServiceImpl implements CreditCardService{
                 return new ResponseEntity<>("Account not found", HttpStatus.NOT_FOUND);
             }
 
-            CreditCardRequest cardRequest = new CreditCardRequest(account);
+            CreditCardRequest cardRequest = new CreditCardRequest(25000L,account);
             account.setCreditCardRequests(List.of(cardRequest));
 
             creditCardRequestRepository.save(cardRequest);
@@ -124,6 +126,7 @@ public class CreditCardServiceImpl implements CreditCardService{
         }
         return new ResponseEntity<>("server error",HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
 
     @Override
     public ResponseEntity<String> deleteRequestCreditCard(Long requestId) {
@@ -139,6 +142,48 @@ public class CreditCardServiceImpl implements CreditCardService{
             e.printStackTrace();
         }
         return new ResponseEntity<>("server error",HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @Override
+    public ResponseEntity<List<SendCreditCardReqWrapper>> getAllCreditCardsRequests() {
+        try {
+            List<CreditCardRequest> creditCardRequests = creditCardRequestRepository.findAll();
+
+            if (creditCardRequests.isEmpty()) {
+                return new ResponseEntity<>(List.of(), HttpStatus.NOT_FOUND);
+            }
+
+            List<SendCreditCardReqWrapper> sendCreditCardReqWrappers = new ArrayList<>();
+
+
+            // we want to send this info to admins
+            for (CreditCardRequest creditCardRequest : creditCardRequests) {
+
+                Account account = creditCardRequest.getAccount();
+
+                if (account == null) {
+                    continue;
+                }
+                Customer customer = account.getCustomer();
+
+                if (customer == null) {
+                    continue;
+                }
+
+                sendCreditCardReqWrappers.add(new SendCreditCardReqWrapper(
+                        customer.getUserName(),
+                        customer.getEmail(),
+                        account.getId(),
+                        account.getBalance(),
+                        creditCardRequest.getId(),
+                        creditCardRequest.getAppliedAmount()));
+            }
+            return new ResponseEntity<>(sendCreditCardReqWrappers,HttpStatus.OK);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(List.of(),HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     // after admin approve req it will delete the request from the table

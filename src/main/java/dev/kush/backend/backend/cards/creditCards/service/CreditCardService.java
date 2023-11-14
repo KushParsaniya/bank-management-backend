@@ -1,6 +1,7 @@
 package dev.kush.backend.backend.cards.creditCards.service;
 
 import dev.kush.backend.backend.cards.creditCards.model.CreditCardWrapper;
+import dev.kush.backend.backend.cards.creditCards.model.SendCreditCardReqWrapper;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -13,4 +14,6 @@ public interface CreditCardService {
     ResponseEntity<String> reqCreditCard(Long accountId);
 
     ResponseEntity<String> deleteRequestCreditCard(Long requestId);
+
+    ResponseEntity<List<SendCreditCardReqWrapper>> getAllCreditCardsRequests();
 }

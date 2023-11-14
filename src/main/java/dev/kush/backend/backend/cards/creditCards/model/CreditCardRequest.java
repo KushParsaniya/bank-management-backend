@@ -18,12 +18,14 @@ import static jakarta.persistence.CascadeType.*;
 public class CreditCardRequest {
     @Id @GeneratedValue
     private Long id;
+    private Long appliedAmount;
 
     @ManyToOne(cascade = {DETACH,REFRESH,PERSIST,MERGE})
     @JsonManagedReference
     private Account account;
 
-    public CreditCardRequest(Account account) {
+    public CreditCardRequest(Long appliedAmount, Account account) {
+        this.appliedAmount = appliedAmount;
         this.account = account;
     }
 }
