@@ -2,9 +2,11 @@ package dev.kush.backend.backend.cards.creditCards.service;
 
 import dev.kush.backend.backend.account.models.Account;
 import dev.kush.backend.backend.cards.creditCards.model.CreditCard;
+import dev.kush.backend.backend.cards.creditCards.model.CreditCardRequest;
 import dev.kush.backend.backend.cards.creditCards.model.CreditCardWrapper;
 import dev.kush.backend.backend.account.repository.AccountRepository;
 import dev.kush.backend.backend.cards.creditCards.repository.CreditCardRepository;
+import dev.kush.backend.backend.cards.creditCards.repository.CreditCardRequestRepository;
 import dev.kush.backend.backend.cards.service.CardGeneratorService;
 import dev.kush.backend.backend.cards.service.CardGeneratorServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,13 +23,17 @@ public class CreditCardServiceImpl implements CreditCardService{
     private final CardGeneratorService cardGeneratorService;
     private final CreditCardRepository creditCardRepository;
     private final AccountRepository accountRepository;
+    private final CreditCardRequestRepository creditCardRequestRepository;
 
     @Autowired
-    public CreditCardServiceImpl(CardGeneratorServiceImpl cardGeneratorService, CreditCardRepository creditCardRepository, AccountRepository accountRepository) {
+    public CreditCardServiceImpl(CardGeneratorService cardGeneratorService, CreditCardRepository creditCardRepository, AccountRepository accountRepository, CreditCardRequestRepository creditCardRequestRepository) {
         this.cardGeneratorService = cardGeneratorService;
         this.creditCardRepository = creditCardRepository;
         this.accountRepository = accountRepository;
+        this.creditCardRequestRepository = creditCardRequestRepository;
     }
+
+
 
     @Override
     public ResponseEntity<String> createCreditCard(Long accountId) {
@@ -66,6 +72,7 @@ public class CreditCardServiceImpl implements CreditCardService{
             return new ResponseEntity<>("error", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    // admin can generate credit card
     @Override
     public ResponseEntity<List<CreditCardWrapper>> getCreditCard(Long accountId) {
         try {
@@ -95,4 +102,45 @@ public class CreditCardServiceImpl implements CreditCardService{
         }
         return new ResponseEntity<>(List.of(),HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    // user can req credit card
+    @Override
+    public ResponseEntity<String> reqCreditCard(Long accountId) {
+        try {
+            Account account = accountRepository.findById(accountId).orElse(null);
+
+            if (account == null) {
+                return new ResponseEntity<>("Account not found", HttpStatus.NOT_FOUND);
+            }
+
+            CreditCardRequest cardRequest = new CreditCardRequest(account);
+            account.setCreditCardRequests(List.of(cardRequest));
+
+            creditCardRequestRepository.save(cardRequest);
+            return new ResponseEntity<>("Successfully applied",HttpStatus.OK);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>("server error",HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @Override
+    public ResponseEntity<String> deleteRequestCreditCard(Long RequestId) {
+        try {
+            CreditCardRequest cardRequest = creditCardRequestRepository.findById(RequestId).orElse(null);
+
+            if (cardRequest == null) {
+                return new ResponseEntity<>("request not found",HttpStatus.NOT_FOUND);
+            }
+            creditCardRequestRepository.delete(cardRequest);
+            return new ResponseEntity<>("successfully deleted",HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>("server error",HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    // after admin approve req it will delete the request from the table
+
 }

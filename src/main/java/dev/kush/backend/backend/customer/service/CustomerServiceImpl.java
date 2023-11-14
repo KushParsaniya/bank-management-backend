@@ -2,6 +2,7 @@ package dev.kush.backend.backend.customer.service;
 
 import dev.kush.backend.backend.account.models.Account;
 import dev.kush.backend.backend.customer.model.Customer;
+import dev.kush.backend.backend.customer.model.Role;
 import dev.kush.backend.backend.transactions.model.Transaction;
 import dev.kush.backend.backend.frontendDetail.model.LoginCustomerWrapper;
 import dev.kush.backend.backend.frontendDetail.model.SendDetailWrapper;
@@ -18,6 +19,8 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import static dev.kush.backend.backend.customer.model.Role.USER;
 
 @Service
 public class CustomerServiceImpl implements CustomerService{
@@ -76,6 +79,7 @@ public class CustomerServiceImpl implements CustomerService{
                     account.getId(),
                     account.getBalance(),
                     account.getAccountType(),
+                    customer.getRole(),
                     transactionWrappers
             );
 
@@ -100,7 +104,8 @@ public class CustomerServiceImpl implements CustomerService{
             Customer customer = new Customer(
                     signUpDetailWrapper.getUsername(),
                     signUpDetailWrapper.getEmail(),
-                    signUpDetailWrapper.getPassword()
+                    signUpDetailWrapper.getPassword(),
+                    USER
             );
 
             Account account = new Account(

@@ -79,6 +79,7 @@ public class AccountServiceImpl implements AccountService {
                     account.getId(),
                     account.getBalance(),
                     account.getAccountType(),
+                    customer.getRole(),
                     transactionWrappers
             );
 

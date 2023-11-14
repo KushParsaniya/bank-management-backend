@@ -1,6 +1,7 @@
 package dev.kush.backend.backend.configurations;
 
 import dev.kush.backend.backend.account.models.Account;
+import dev.kush.backend.backend.customer.model.Role;
 import dev.kush.backend.backend.loans.model.LoanType;
 import dev.kush.backend.backend.cards.creditCards.model.CreditCard;
 import dev.kush.backend.backend.customer.model.Customer;
@@ -16,6 +17,7 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.List;
 
+import static dev.kush.backend.backend.customer.model.Role.ADMIN;
 import static dev.kush.backend.backend.transactions.model.TransactionType.*;
 
 @Configuration
@@ -27,7 +29,7 @@ public class SampleData {
             customer.setUserName("Kush Parsaniya");
             customer.setEmail("kush@gmail.com");
             customer.setPassword("kush1234");
-
+            customer.setRole(ADMIN);
             Account account = new Account(10000L, AccountType.SAVING,customer);
 
             customer.setAccount(account);

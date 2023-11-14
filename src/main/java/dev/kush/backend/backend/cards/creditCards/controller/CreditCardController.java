@@ -31,4 +31,14 @@ public class CreditCardController {
     public ResponseEntity<List<CreditCardWrapper>> getCreditCard(@PathVariable Long accountId){
         return creditCardService.getCreditCard(accountId);
     }
+
+    @GetMapping("/requestCreditCard/{accountId}")
+    public ResponseEntity<String> reqCreditCard(@PathVariable Long accountId){
+        return creditCardService.reqCreditCard(accountId);
+    }
+
+    @DeleteMapping("/deleteRequestCreditCard/{requestId}")
+    public ResponseEntity<String> deleteRequestCreditCard(@PathVariable Long requestId){
+        return creditCardService.deleteRequestCreditCard(requestId);
+    }
 }
