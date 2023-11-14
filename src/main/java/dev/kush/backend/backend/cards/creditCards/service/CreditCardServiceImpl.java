@@ -126,9 +126,9 @@ public class CreditCardServiceImpl implements CreditCardService{
     }
 
     @Override
-    public ResponseEntity<String> deleteRequestCreditCard(Long RequestId) {
+    public ResponseEntity<String> deleteRequestCreditCard(Long requestId) {
         try {
-            CreditCardRequest cardRequest = creditCardRequestRepository.findById(RequestId).orElse(null);
+            CreditCardRequest cardRequest = creditCardRequestRepository.findById(requestId).orElse(null);
 
             if (cardRequest == null) {
                 return new ResponseEntity<>("request not found",HttpStatus.NOT_FOUND);

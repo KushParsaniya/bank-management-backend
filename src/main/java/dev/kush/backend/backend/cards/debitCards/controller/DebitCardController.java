@@ -31,4 +31,14 @@ public class DebitCardController {
     public ResponseEntity<List<DebitCardWrapper>> getDebitCard(@PathVariable Long accountId){
         return debitCardService.getDebitCard(accountId);
     }
+
+    @GetMapping("requestDebitCard/{accountId}")
+    public ResponseEntity<String> requestDebitCard(@PathVariable Long accountId){
+        return debitCardService.requestDebitCard(accountId);
+    }
+
+    @DeleteMapping("deleteRequestDebitCard/{requestId}")
+    public ResponseEntity<String> deleteReqDebitCard(@PathVariable Long requestId){
+        return debitCardService.deleteReqDebitCard(requestId);
+    }
 }

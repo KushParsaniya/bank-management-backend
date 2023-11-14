@@ -3,6 +3,7 @@ package dev.kush.backend.backend.account.models;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import dev.kush.backend.backend.cards.creditCards.model.CreditCardRequest;
+import dev.kush.backend.backend.cards.debitCards.model.DebitCardRequest;
 import dev.kush.backend.backend.customer.model.Customer;
 import dev.kush.backend.backend.cards.creditCards.model.CreditCard;
 import dev.kush.backend.backend.cards.debitCards.model.DebitCard;
@@ -54,6 +55,10 @@ public class Account {
     @JsonBackReference
     private List<CreditCardRequest> creditCardRequests;
 
+    @OneToMany(mappedBy = "account",cascade = ALL)
+    @JsonBackReference
+    private List<DebitCardRequest> debitCardRequests;
+
     public Account(Long balance, AccountType accountType, Customer customer) {
         this.balance = balance;
         this.accountType = accountType;
@@ -84,7 +89,7 @@ public class Account {
         this.loans = loans;
     }
 
-    public Account(Long balance, AccountType accountType, Customer customer, List<CreditCard> creditCards, List<DebitCard> debitCards, List<Loan> loans, List<Transaction> transactions, List<CreditCardRequest> creditCardRequests) {
+    public Account(Long balance, AccountType accountType, Customer customer, List<CreditCard> creditCards, List<DebitCard> debitCards, List<Loan> loans, List<Transaction> transactions, List<CreditCardRequest> creditCardRequests, List<DebitCardRequest> debitCardRequests) {
         this.balance = balance;
         this.accountType = accountType;
         this.customer = customer;
@@ -93,5 +98,6 @@ public class Account {
         this.loans = loans;
         this.transactions = transactions;
         this.creditCardRequests = creditCardRequests;
+        this.debitCardRequests = debitCardRequests;
     }
 }
