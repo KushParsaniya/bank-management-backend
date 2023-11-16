@@ -1,7 +1,6 @@
-package dev.kush.backend.backend.transactions.model;
+package dev.kush.backend.backend.account.models;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import dev.kush.backend.backend.account.models.Account;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,6 +18,7 @@ public class Transaction {
     private Long id;
     private String date;
     private String time;
+    @Enumerated(value = EnumType.STRING)
     private TransactionType description;
     private Long amount;
 

@@ -2,6 +2,7 @@ package dev.kush.backend.backend.loans.controller;
 
 import dev.kush.backend.backend.loans.model.LoanWrapper;
 import dev.kush.backend.backend.loans.model.ReceivedLoanWrapper;
+import dev.kush.backend.backend.loans.model.SendRequestLoan;
 import dev.kush.backend.backend.loans.service.LoanService;
 import dev.kush.backend.backend.loans.service.LoanServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +27,23 @@ public class LoanController {
         return loanService.getAllLoan(id);
     }
 
-    @PostMapping("/createLoan")
-    public ResponseEntity<String> createLoan(@RequestBody ReceivedLoanWrapper receivedLoanWrapper){
-        return loanService.createLoan(receivedLoanWrapper);
+    @GetMapping("/createLoan/{requestId}")
+    public ResponseEntity<String> createLoan(@PathVariable Long requestId){
+        return loanService.createLoan(requestId);
+    }
+
+    @PostMapping("/applyLoan")
+    public ResponseEntity<String> applyLoan(@RequestBody ReceivedLoanWrapper receivedLoanWrapper){
+        return loanService.applyLoan(receivedLoanWrapper);
+    }
+
+    @DeleteMapping("/deleteLoanRequest/{requestId}")
+    public ResponseEntity<String> deleteLoanRequest(@PathVariable Long requestId){
+        return loanService.deleteLoanRequest(requestId);
+    }
+
+    @GetMapping("getAllLoanRequests")
+    public ResponseEntity<List<SendRequestLoan>> getAllLoanRequests(){
+        return loanService.getAllLoanRequests();
     }
 }

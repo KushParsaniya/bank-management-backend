@@ -8,7 +8,7 @@ import dev.kush.backend.backend.customer.model.Customer;
 import dev.kush.backend.backend.cards.creditCards.model.CreditCard;
 import dev.kush.backend.backend.cards.debitCards.model.DebitCard;
 import dev.kush.backend.backend.loans.model.Loan;
-import dev.kush.backend.backend.transactions.model.Transaction;
+import dev.kush.backend.backend.loans.model.LoanRequest;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,6 +29,7 @@ public class Account {
     // account number
     private Long id;
     private Long balance;
+    @Enumerated(EnumType.STRING)
     private AccountType accountType;
 
     @OneToOne(cascade = ALL)
@@ -58,6 +59,10 @@ public class Account {
     @OneToMany(mappedBy = "account",cascade = ALL)
     @JsonBackReference
     private List<DebitCardRequest> debitCardRequests;
+
+    @OneToMany(mappedBy = "account",cascade = ALL)
+    @JsonBackReference
+    private List<LoanRequest> loanRequests;
 
     public Account(Long balance, AccountType accountType, Customer customer) {
         this.balance = balance;
@@ -89,7 +94,7 @@ public class Account {
         this.loans = loans;
     }
 
-    public Account(Long balance, AccountType accountType, Customer customer, List<CreditCard> creditCards, List<DebitCard> debitCards, List<Loan> loans, List<Transaction> transactions, List<CreditCardRequest> creditCardRequests, List<DebitCardRequest> debitCardRequests) {
+    public Account(Long balance, AccountType accountType, Customer customer, List<CreditCard> creditCards, List<DebitCard> debitCards, List<Loan> loans, List<Transaction> transactions, List<CreditCardRequest> creditCardRequests, List<DebitCardRequest> debitCardRequests, List<LoanRequest> loanRequests) {
         this.balance = balance;
         this.accountType = accountType;
         this.customer = customer;
@@ -99,5 +104,6 @@ public class Account {
         this.transactions = transactions;
         this.creditCardRequests = creditCardRequests;
         this.debitCardRequests = debitCardRequests;
+        this.loanRequests = loanRequests;
     }
 }

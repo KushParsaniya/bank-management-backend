@@ -1,15 +1,16 @@
 package dev.kush.backend.backend.account.service;
 
+import dev.kush.backend.backend.account.models.DepositMoneyWrapper;
 import dev.kush.backend.backend.account.models.Account;
 import dev.kush.backend.backend.customer.model.Customer;
-import dev.kush.backend.backend.transactions.model.TransactionType;
-import dev.kush.backend.backend.transactions.model.Transaction;
+import dev.kush.backend.backend.account.models.TransactionType;
+import dev.kush.backend.backend.account.models.Transaction;
 import dev.kush.backend.backend.frontendDetail.model.SendDetailWrapper;
-import dev.kush.backend.backend.transactions.model.TransactionWrapper;
-import dev.kush.backend.backend.transactions.model.TransferMoneyWrapper;
+import dev.kush.backend.backend.account.models.TransactionWrapper;
+import dev.kush.backend.backend.account.models.TransferMoneyWrapper;
 import dev.kush.backend.backend.account.repository.AccountRepository;
 import dev.kush.backend.backend.customer.repository.CustomerRepository;
-import dev.kush.backend.backend.transactions.repository.TransactionRepository;
+import dev.kush.backend.backend.account.repository.TransactionRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -143,5 +144,33 @@ public class AccountServiceImpl implements AccountService {
             e.printStackTrace();
         }
         return new ResponseEntity<>("error", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @Transactional
+    @Override
+    public ResponseEntity<String> deposite(DepositMoneyWrapper depositMoneyWrapper) {
+        try {
+            Account account = accountRepository.findById(depositMoneyWrapper.getAccountId()).orElse(null);
+
+            if (account == null){
+                return new ResponseEntity<>("account not found",HttpStatus.NOT_FOUND);
+            }
+
+            account.setBalance(account.getBalance() + depositMoneyWrapper.getAmount());
+
+            // also we have to add it to transaction table
+            Transaction transaction = new Transaction(
+                    LocalDate.now().toString(),
+                    LocalTime.now().toString(),
+                    TransactionType.DEPOSIT,
+                    depositMoneyWrapper.getAmount(),
+                    account
+            );
+            transactionRepository.save(transaction);
+            return new ResponseEntity<>("successfully deposit",HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>("server error",HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

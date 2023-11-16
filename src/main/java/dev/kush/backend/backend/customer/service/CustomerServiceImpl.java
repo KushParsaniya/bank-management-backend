@@ -2,15 +2,14 @@ package dev.kush.backend.backend.customer.service;
 
 import dev.kush.backend.backend.account.models.Account;
 import dev.kush.backend.backend.customer.model.Customer;
-import dev.kush.backend.backend.customer.model.Role;
-import dev.kush.backend.backend.transactions.model.Transaction;
+import dev.kush.backend.backend.account.models.Transaction;
 import dev.kush.backend.backend.frontendDetail.model.LoginCustomerWrapper;
 import dev.kush.backend.backend.frontendDetail.model.SendDetailWrapper;
 import dev.kush.backend.backend.frontendDetail.model.SignUpDetailWrapper;
-import dev.kush.backend.backend.transactions.model.TransactionWrapper;
+import dev.kush.backend.backend.account.models.TransactionWrapper;
 import dev.kush.backend.backend.account.repository.AccountRepository;
 import dev.kush.backend.backend.customer.repository.CustomerRepository;
-import dev.kush.backend.backend.transactions.repository.TransactionRepository;
+import dev.kush.backend.backend.account.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

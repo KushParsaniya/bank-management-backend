@@ -2,7 +2,7 @@ package dev.kush.backend.backend.frontendDetail.model;
 
 import dev.kush.backend.backend.account.models.AccountType;
 import dev.kush.backend.backend.customer.model.Role;
-import dev.kush.backend.backend.transactions.model.TransactionWrapper;
+import dev.kush.backend.backend.account.models.TransactionWrapper;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

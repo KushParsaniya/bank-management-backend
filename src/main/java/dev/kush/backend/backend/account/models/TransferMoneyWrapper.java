@@ -1,4 +1,4 @@
-package dev.kush.backend.backend.transactions.model;
+package dev.kush.backend.backend.account.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

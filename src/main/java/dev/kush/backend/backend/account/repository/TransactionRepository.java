@@ -1,6 +1,6 @@
-package dev.kush.backend.backend.transactions.repository;
+package dev.kush.backend.backend.account.repository;
 
-import dev.kush.backend.backend.transactions.model.Transaction;
+import dev.kush.backend.backend.account.models.Transaction;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

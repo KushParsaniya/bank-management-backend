@@ -13,6 +13,5 @@ import lombok.Setter;
 public class ReceivedLoanWrapper {
     private LoanType loanType;
     private Long loanAmount;
-    private Float loanInterest;
     private Long accountId;
 }

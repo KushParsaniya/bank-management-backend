@@ -1,10 +1,10 @@
 package dev.kush.backend.backend.account.controller;
 
+import dev.kush.backend.backend.account.models.DepositMoneyWrapper;
 import dev.kush.backend.backend.frontendDetail.model.SendDetailWrapper;
-import dev.kush.backend.backend.transactions.model.TransferMoneyWrapper;
+import dev.kush.backend.backend.account.models.TransferMoneyWrapper;
 import dev.kush.backend.backend.account.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,5 +32,8 @@ public class AccountController {
         return accountService.transfer(transferMoneyWrapper);
     }
 
-
+    @PutMapping("/deposit")
+    public ResponseEntity<String> deposite(@RequestBody DepositMoneyWrapper depositMoneyWrapper) {
+        return accountService.deposite(depositMoneyWrapper);
+    }
 }

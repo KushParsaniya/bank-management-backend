@@ -18,6 +18,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 public class Loan {
     @Id @GeneratedValue(strategy = IDENTITY)
     private Long id;
+    @Enumerated(EnumType.STRING)
     private LoanType loanType;
     private Long loanAmount;
     private Float interest;
