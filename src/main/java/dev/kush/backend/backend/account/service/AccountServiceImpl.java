@@ -148,7 +148,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Transactional
     @Override
-    public ResponseEntity<String> deposite(DepositMoneyWrapper depositMoneyWrapper) {
+    public ResponseEntity<String> deposit(DepositMoneyWrapper depositMoneyWrapper) {
         try {
             Account account = accountRepository.findById(depositMoneyWrapper.getAccountId()).orElse(null);
 

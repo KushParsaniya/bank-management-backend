@@ -33,7 +33,7 @@ public class AccountController {
     }
 
     @PutMapping("/deposit")
-    public ResponseEntity<String> deposite(@RequestBody DepositMoneyWrapper depositMoneyWrapper) {
-        return accountService.deposite(depositMoneyWrapper);
+    public ResponseEntity<String> deposit(@RequestBody DepositMoneyWrapper depositMoneyWrapper) {
+        return accountService.deposit(depositMoneyWrapper);
     }
 }

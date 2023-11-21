@@ -28,8 +28,8 @@ public class SampleData {
             Account account2 = new Account(5000L, AccountType.SAVING,customer2);
             customer2.setAccount(account2);
 
-            CreditCard creditCard1 = new CreditCard("123446472712","123",25000L,23000L,"2025-07-13",account1);
-            CreditCard creditCard2 = new CreditCard("858894983228","198",25000L,22000L,"2025-09-11",account2);
+            CreditCard creditCard1 = new CreditCard("1234464727123465","123",25000L,23000L,"2025-07-13",account1);
+            CreditCard creditCard2 = new CreditCard("8588949832285738","198",25000L,22000L,"2025-09-11",account2);
 
             account1.setCreditCards(List.of(creditCard1));
             account2.setCreditCards(List.of(creditCard2));

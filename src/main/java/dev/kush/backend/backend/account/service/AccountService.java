@@ -10,5 +10,5 @@ public interface AccountService {
 
     ResponseEntity<String> transfer(TransferMoneyWrapper transferMoneyWrapper);
 
-    ResponseEntity<String> deposite(DepositMoneyWrapper depositMoneyWrapper);
+    ResponseEntity<String> deposit(DepositMoneyWrapper depositMoneyWrapper);
 }
