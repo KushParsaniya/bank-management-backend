@@ -10,4 +10,5 @@ import lombok.*;
 public class DepositMoneyWrapper {
     private Long accountId;
     private Long amount;
+
 }

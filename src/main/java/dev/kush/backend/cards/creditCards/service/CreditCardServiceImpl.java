@@ -11,6 +11,7 @@ import dev.kush.backend.cards.creditCards.repository.CreditCardRequestRepository
 import dev.kush.backend.cards.service.CardGeneratorService;
 import dev.kush.backend.cards.service.CardGeneratorServiceImpl;
 import dev.kush.backend.customer.model.Customer;
+import dev.kush.backend.exception.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,12 +40,10 @@ public class CreditCardServiceImpl implements CreditCardService{
 
     @Override
     public ResponseEntity<String> createCreditCard(Long accountId) {
-        try {
-            Account account = accountRepository.findById(accountId).orElse(null);
+            Account account = accountRepository.findById(accountId).orElseThrow(
+                    () -> new UserNotFoundException("Account with id " + accountId + " does not exist")
+            );
 
-            if (account == null) {
-                return new ResponseEntity<>("Account not found", HttpStatus.NOT_FOUND);
-            }
 
             String cardNumber = cardGeneratorService.generateCardNumber();
             CreditCard cardOptional = creditCardRepository.findByCardNumber(cardNumber).orElse(null);
@@ -67,17 +66,12 @@ public class CreditCardServiceImpl implements CreditCardService{
             account.setCreditCards(List.of(creditCard));
             creditCardRepository.save(creditCard);
             return new ResponseEntity<>("succesfully created",HttpStatus.OK);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-            return new ResponseEntity<>("error", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     // admin can generate credit card
     @Override
     public ResponseEntity<List<CreditCardWrapper>> getCreditCard(Long accountId) {
-        try {
+
             List<CreditCard> creditCards = creditCardRepository.findAllReferenceByAccountId(accountId).orElse(List.of());
 
             if (creditCards.isEmpty()) {
@@ -97,23 +91,16 @@ public class CreditCardServiceImpl implements CreditCardService{
                 ));
             }
             return new ResponseEntity<>(creditCardWrappers,HttpStatus.OK);
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return new ResponseEntity<>(List.of(),HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     // user can req credit card
     @Override
     public ResponseEntity<String> reqCreditCard(Long accountId) {
-        try {
-            Account account = accountRepository.findById(accountId).orElse(null);
 
-            if (account == null) {
-                return new ResponseEntity<>("Account not found", HttpStatus.NOT_FOUND);
-            }
+            Account account = accountRepository.findById(accountId).orElseThrow(
+                    () -> new UserNotFoundException("Account with id " + accountId + " does not exist")
+            );
+
 
             CreditCardRequest cardRequest = new CreditCardRequest(25000L,account);
             account.setCreditCardRequests(List.of(cardRequest));
@@ -121,36 +108,28 @@ public class CreditCardServiceImpl implements CreditCardService{
             creditCardRequestRepository.save(cardRequest);
             return new ResponseEntity<>("Successfully applied",HttpStatus.OK);
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return new ResponseEntity<>("server error",HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 
     @Override
     public ResponseEntity<String> deleteRequestCreditCard(Long requestId) {
-        try {
-            CreditCardRequest cardRequest = creditCardRequestRepository.findById(requestId).orElse(null);
 
-            if (cardRequest == null) {
-                return new ResponseEntity<>("request not found",HttpStatus.NOT_FOUND);
-            }
+            CreditCardRequest cardRequest = creditCardRequestRepository.findById(requestId).orElseThrow(
+                    () -> new UserNotFoundException("credit card request not found")
+            );
+
+
             creditCardRequestRepository.delete(cardRequest);
             return new ResponseEntity<>("successfully deleted",HttpStatus.OK);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return new ResponseEntity<>("server error",HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @Override
     public ResponseEntity<List<SendCreditCardReqWrapper>> getAllCreditCardsRequests() {
-        try {
+
             List<CreditCardRequest> creditCardRequests = creditCardRequestRepository.findAll();
 
             if (creditCardRequests.isEmpty()) {
-                return new ResponseEntity<>(List.of(), HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(List.of(), HttpStatus.OK);
             }
 
             List<SendCreditCardReqWrapper> sendCreditCardReqWrappers = new ArrayList<>();
@@ -180,12 +159,10 @@ public class CreditCardServiceImpl implements CreditCardService{
             }
             return new ResponseEntity<>(sendCreditCardReqWrappers,HttpStatus.OK);
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return new ResponseEntity<>(List.of(),HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     // after admin approve req it will delete the request from the table
+
+    // TODO : Give all status of all pending request to USER
 
 }

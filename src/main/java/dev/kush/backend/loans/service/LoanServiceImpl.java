@@ -3,6 +3,7 @@ package dev.kush.backend.loans.service;
 import dev.kush.backend.account.models.Account;
 import dev.kush.backend.account.repository.AccountRepository;
 import dev.kush.backend.customer.model.Customer;
+import dev.kush.backend.exception.UserNotFoundException;
 import dev.kush.backend.loans.model.*;
 import dev.kush.backend.loans.repository.LoanRepository;
 import dev.kush.backend.loans.repository.LoanRequestRepository;
@@ -33,7 +34,6 @@ public class LoanServiceImpl implements LoanService{
     // get all active loan
     @Override
     public ResponseEntity<List<LoanWrapper>> getAllLoan(Long id) {
-        try {
             List<Loan> loans = loanRepository.findAllReferenceByAccountId(id).orElse(List.of());
 
             // check if no loan found
@@ -54,25 +54,20 @@ public class LoanServiceImpl implements LoanService{
             }
             return new ResponseEntity<>(loanWrappers,HttpStatus.OK);
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return new ResponseEntity<>(List.of(), HttpStatus.INTERNAL_SERVER_ERROR);
+
     }
 
     @Override
     public ResponseEntity<String> createLoan(Long requstId) {
-        try {
-            LoanRequest loanRequest = loanRequestRepository.findById(requstId).orElse(null);
+            LoanRequest loanRequest = loanRequestRepository.findById(requstId).orElseThrow(
+                    () -> new UserNotFoundException("Loan request not found")
+            );
 
-            if (loanRequest == null) {
-                return new ResponseEntity<>("request not fount",HttpStatus.NOT_FOUND);
-            }
 
             Account account = loanRequest.getAccount();
 
             if (account == null) {
-                return new ResponseEntity<>("account not found", HttpStatus.NOT_FOUND);
+                throw new UserNotFoundException("Account not found");
             }
 
             Loan loan = new Loan(
@@ -87,20 +82,14 @@ public class LoanServiceImpl implements LoanService{
             loanRepository.save(loan);
             return new ResponseEntity<>("successfully created loan",HttpStatus.OK);
 
-        } catch (Exception e){
-          e.printStackTrace();
-        }
-        return new ResponseEntity<>("server error",HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @Override
     public ResponseEntity<String> applyLoan(ReceivedLoanWrapper receivedLoanWrapper) {
-        try {
-            Account account = accountRepository.findById(receivedLoanWrapper.getAccountId()).orElse(null);
 
-            if(account == null) {
-                return new ResponseEntity<>("Account not found", HttpStatus.NOT_FOUND);
-            }
+            Account account = accountRepository.findById(receivedLoanWrapper.getAccountId()).orElseThrow(
+                    () -> new UserNotFoundException("Account with id " + receivedLoanWrapper.getAccountId() + " does not exist")
+            );
 
             LoanRequest loanRequest = new LoanRequest(
                     receivedLoanWrapper.getLoanAmount(),
@@ -113,37 +102,26 @@ public class LoanServiceImpl implements LoanService{
 
             loanRequestRepository.save(loanRequest);
             return new ResponseEntity<>("successfully applied for loan", HttpStatus.OK);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return new ResponseEntity<>("server error",HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @Override
     public ResponseEntity<String> deleteLoanRequest(Long requestId) {
-        try {
-            LoanRequest loanRequest = loanRequestRepository.findById(requestId).orElse(null);
 
-            if (loanRequest == null) {
-                return new ResponseEntity<>("request not found",HttpStatus.NOT_FOUND);
-            }
+        LoanRequest loanRequest = loanRequestRepository.findById(requestId).orElseThrow(
+                () -> new UserNotFoundException("Loan request not found")
+        );
 
-            loanRequestRepository.delete(loanRequest);
-            return new ResponseEntity<>("successfully deleted",HttpStatus.OK);
+        loanRequestRepository.delete(loanRequest);
+        return new ResponseEntity<>("successfully deleted", HttpStatus.OK);
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return new ResponseEntity<>("server error",HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @Override
     public ResponseEntity<List<SendRequestLoan>> getAllLoanRequests() {
-        try {
             List<LoanRequest> loanRequests = loanRequestRepository.findAll();
 
             if (loanRequests.isEmpty()) {
-                return new ResponseEntity<>(List.of(), HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(List.of(), HttpStatus.OK);
             }
 
             List<SendRequestLoan> sendRequestLoans = new ArrayList<>();
@@ -175,11 +153,6 @@ public class LoanServiceImpl implements LoanService{
 
             return new ResponseEntity<>(sendRequestLoans,HttpStatus.OK);
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return new ResponseEntity<>(List.of(),HttpStatus.INTERNAL_SERVER_ERROR);
     }
-
 
 }

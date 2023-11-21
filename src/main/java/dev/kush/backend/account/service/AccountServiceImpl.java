@@ -5,6 +5,9 @@ import dev.kush.backend.account.repository.AccountRepository;
 import dev.kush.backend.account.repository.TransactionRepository;
 import dev.kush.backend.customer.model.Customer;
 import dev.kush.backend.customer.repository.CustomerRepository;
+import dev.kush.backend.exception.BadRequestException;
+import dev.kush.backend.exception.UnprocessableEntityException;
+import dev.kush.backend.exception.UserNotFoundException;
 import dev.kush.backend.frontendDetail.model.SendDetailWrapper;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +19,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class AccountServiceImpl implements AccountService {
@@ -35,25 +39,17 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public ResponseEntity<SendDetailWrapper> getByAccountId(Long accountId) {
-        try {
+
             if (accountId == null) {
-                return new ResponseEntity<>(new SendDetailWrapper(), HttpStatus.BAD_REQUEST);
+                 throw new BadRequestException("Please enter a valid accountId");
             }
             // find account by accountId
-            Account account = accountRepository.findById(accountId).orElse(null);
-            if (account == null) {
-                return new ResponseEntity<>(new SendDetailWrapper(), HttpStatus.NOT_FOUND);
-            }
-
+            Account account = accountRepository.findById(accountId).orElseThrow(() -> new UserNotFoundException("" +
+                    "user with id " + accountId + " does not exist"));
             Customer customer = account.getCustomer();
 
-            if (customer == null) {
-                return new ResponseEntity<>(new SendDetailWrapper(), HttpStatus.NOT_FOUND);
-            }
-
-
             // all transaction associated with the account
-            List<Transaction> transactions = transactionRepository.findAllReferenceByAccountId(account.getId()).orElse(null);
+            List<Transaction> transactions = transactionRepository.findAllReferenceByAccountId(account.getId()).orElse(List.of());
 
             // now convert this transaction to transactionWrapper
             List<TransactionWrapper> transactionWrappers = new ArrayList<>();
@@ -81,35 +77,27 @@ public class AccountServiceImpl implements AccountService {
 
             return new ResponseEntity<>(sendDetailWrapper, HttpStatus.OK);
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return new ResponseEntity<>(new SendDetailWrapper(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @Override
     @Transactional
     public ResponseEntity<String> transfer(TransferMoneyWrapper transferMoneyWrapper) {
-        try {
             // find sender account by senderAccountID
-            Account senderAccount = accountRepository.findById(transferMoneyWrapper.getSenderId()).orElse(null);
-            if (senderAccount == null) {
-                return new ResponseEntity<>("sender account not found", HttpStatus.NOT_FOUND);
-            }
-            if (senderAccount.getBalance() < transferMoneyWrapper.getAmount()){
-                return new ResponseEntity<>("insufficient balance.", HttpStatus.UNPROCESSABLE_ENTITY);
-            }
+            Account senderAccount = accountRepository.findById(transferMoneyWrapper.getSenderId()).orElseThrow(
+                    () -> new UserNotFoundException("Sender account not found")
+            );
 
+            // check if balance is sufficient
+            if (senderAccount.getBalance() < transferMoneyWrapper.getAmount()){
+                throw new UnprocessableEntityException("insufficient balance");
+            }
 
             // find receiver account by receiverAccountID
-            Account receiverAccount = accountRepository.findById(transferMoneyWrapper.getReceiverId()).orElse(null);
+            Account receiverAccount = accountRepository.findById(transferMoneyWrapper.getReceiverId()).orElseThrow(
+                    () -> new UserNotFoundException("receiver account not found"));
 
-            if (receiverAccount == null) {
-                return new ResponseEntity<>("receiver account not found", HttpStatus.NOT_FOUND);
-            }
-
-            if (senderAccount.getId() == receiverAccount.getId()) {
-                return new ResponseEntity<>("sender and receiver cannot be the same account", HttpStatus.BAD_REQUEST);
+            if (Objects.equals(senderAccount.getId(), receiverAccount.getId())) {
+                throw new BadRequestException("You cannot transfer money to yourself.");
             }
 
             // money deduct from sender account
@@ -135,23 +123,17 @@ public class AccountServiceImpl implements AccountService {
             transactionRepository.saveAll(List.of(senderTransaction,receiverTransaction));
             return new ResponseEntity<>("successfully transferred",HttpStatus.OK);
 
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-        return new ResponseEntity<>("error", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @Transactional
     @Override
     public ResponseEntity<String> deposit(DepositMoneyWrapper depositMoneyWrapper) {
-        try {
-            Account account = accountRepository.findById(depositMoneyWrapper.getAccountId()).orElse(null);
 
-            if (account == null){
-                return new ResponseEntity<>("account not found",HttpStatus.NOT_FOUND);
-            }
+            Account account = accountRepository.findById(depositMoneyWrapper.getAccountId()).orElseThrow(
+                    () -> new UserNotFoundException("User with id " + depositMoneyWrapper.getAccountId() + " does not exist"));
 
-            account.setBalance(account.getBalance() + depositMoneyWrapper.getAmount());
+
+                account.setBalance(account.getBalance() + depositMoneyWrapper.getAmount());
 
             // also we have to add it to transaction table
             Transaction transaction = new Transaction(
@@ -163,9 +145,6 @@ public class AccountServiceImpl implements AccountService {
             );
             transactionRepository.save(transaction);
             return new ResponseEntity<>("successfully deposit",HttpStatus.OK);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return new ResponseEntity<>("server error",HttpStatus.INTERNAL_SERVER_ERROR);
+
     }
 }

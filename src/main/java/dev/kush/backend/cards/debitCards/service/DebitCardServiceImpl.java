@@ -12,6 +12,7 @@ import dev.kush.backend.cards.debitCards.repository.DebitCardRepository;
 import dev.kush.backend.cards.debitCards.repository.DebitCardRequestRepository;
 import dev.kush.backend.cards.service.CardGeneratorService;
 import dev.kush.backend.customer.model.Customer;
+import dev.kush.backend.exception.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,12 +40,10 @@ public class DebitCardServiceImpl implements DebitCardService {
 
     @Override
     public ResponseEntity<String> createDebitCard(Long accountId) {
-        try {
-            Account account = accountRepository.findById(accountId).orElse(null);
+            Account account = accountRepository.findById(accountId).orElseThrow(
+                    () -> new UserNotFoundException("Account with id " + accountId + " does not exist")
 
-            if (account == null) {
-                return new ResponseEntity<>("Account not found", HttpStatus.NOT_FOUND);
-            }
+            );
 
             String cardNumber = cardGeneratorService.generateCardNumber();
             DebitCard cardOptional = debitCardRepository.findByCardNumber(cardNumber).orElse(null);
@@ -65,15 +64,11 @@ public class DebitCardServiceImpl implements DebitCardService {
             debitCardRepository.save(debitCard);
             return new ResponseEntity<>("succesfully created", HttpStatus.OK);
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return new ResponseEntity<>("error", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @Override
     public ResponseEntity<List<DebitCardWrapper>> getDebitCard(Long accountId) {
-        try {
+
             List<DebitCard> debitCards = debitCardRepository.findAllReferenceByAccountId(accountId).orElse(List.of());
 
             if (debitCards.isEmpty()) {
@@ -93,23 +88,16 @@ public class DebitCardServiceImpl implements DebitCardService {
             }
             return new ResponseEntity<>(debitCardWrappers, HttpStatus.OK);
 
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return new ResponseEntity<>(List.of(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     //user request debit card
 
     @Override
     public ResponseEntity<String> requestDebitCard(Long accountId) {
-        try {
-            Account account = accountRepository.findById(accountId).orElse(null);
+            Account account = accountRepository.findById(accountId).orElseThrow(
+                    () -> new UserNotFoundException("Account with id " + accountId + " does not exist")
 
-            if (account == null) {
-                return new ResponseEntity<>("Account not found", HttpStatus.NOT_FOUND);
-            }
+            );
 
             DebitCardRequest cardRequest = new DebitCardRequest(account);
             account.setDebitCardRequests(List.of(cardRequest));
@@ -117,36 +105,25 @@ public class DebitCardServiceImpl implements DebitCardService {
             debitCardRequestRepository.save(cardRequest);
             return new ResponseEntity<>("Successfully applied", HttpStatus.OK);
 
-        } catch (
-                Exception e) {
-            e.printStackTrace();
-        }
-        return new ResponseEntity<>("server error", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @Override
     public ResponseEntity<String> deleteReqDebitCard(Long requestId) {
-        try {
-            DebitCardRequest cardRequest = debitCardRequestRepository.findById(requestId).orElse(null);
+            DebitCardRequest cardRequest = debitCardRequestRepository.findById(requestId).orElseThrow(
+                    () -> new UserNotFoundException("debit card request not found")
+            );
 
-            if (cardRequest == null) {
-                return new ResponseEntity<>("request not found",HttpStatus.NOT_FOUND);
-            }
             debitCardRequestRepository.delete(cardRequest);
             return new ResponseEntity<>("successfully deleted",HttpStatus.OK);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return new ResponseEntity<>("server error",HttpStatus.INTERNAL_SERVER_ERROR);
+
     }
 
     @Override
     public ResponseEntity<List<SendDebitCardReqWrapper>> getAllReqDebitCards() {
-        try {
             List<DebitCardRequest> debitCardRequests = debitCardRequestRepository.findAll();
 
             if (debitCardRequests.isEmpty()) {
-                return new ResponseEntity<>(List.of(), HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(List.of(), HttpStatus.OK);
             }
 
             List<SendDebitCardReqWrapper> sendDebitCardReqWrappers = new ArrayList<>();
@@ -175,10 +152,7 @@ public class DebitCardServiceImpl implements DebitCardService {
             }
             return new ResponseEntity<>(sendDebitCardReqWrappers,HttpStatus.OK);
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return new ResponseEntity<>(List.of(),HttpStatus.INTERNAL_SERVER_ERROR);
+
     }
 
 
