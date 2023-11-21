@@ -1,4 +1,4 @@
-package dev.kush.backend.backend;
+package dev.kush.backend;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
