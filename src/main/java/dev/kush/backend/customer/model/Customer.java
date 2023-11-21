@@ -6,6 +6,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 @Entity
@@ -27,19 +29,26 @@ public class Customer {
     @JsonBackReference
     private Account account;
 
+    @Transient
+    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
+
 
     public Customer(String userName, String email, String password, Role role) {
         this.userName = userName;
         this.email = email;
-        this.password = password;
+        this.password = passwordEncoder.encode(password);
         this.role = role;
     }
 
     public Customer(String userName, String email, String password, Role role, Account account) {
         this.userName = userName;
         this.email = email;
-        this.password = password;
+        this.password = passwordEncoder.encode(password);
         this.role = role;
         this.account = account;
+    }
+
+    public void setPassword(String password) {
+        this.password = passwordEncoder.encode(password);
     }
 }

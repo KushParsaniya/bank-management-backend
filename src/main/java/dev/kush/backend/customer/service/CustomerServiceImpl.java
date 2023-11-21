@@ -1,22 +1,22 @@
 package dev.kush.backend.customer.service;
 
 import dev.kush.backend.account.models.Account;
-import dev.kush.backend.customer.model.Customer;
 import dev.kush.backend.account.models.Transaction;
+import dev.kush.backend.account.models.TransactionWrapper;
+import dev.kush.backend.account.repository.AccountRepository;
+import dev.kush.backend.account.repository.TransactionRepository;
+import dev.kush.backend.customer.model.Customer;
+import dev.kush.backend.customer.repository.CustomerRepository;
 import dev.kush.backend.exception.ConflictException;
 import dev.kush.backend.exception.UnauthorizedUserException;
-import dev.kush.backend.exception.UnprocessableEntityException;
 import dev.kush.backend.exception.UserNotFoundException;
 import dev.kush.backend.frontendDetail.model.LoginCustomerWrapper;
 import dev.kush.backend.frontendDetail.model.SendDetailWrapper;
 import dev.kush.backend.frontendDetail.model.SignUpDetailWrapper;
-import dev.kush.backend.account.models.TransactionWrapper;
-import dev.kush.backend.account.repository.AccountRepository;
-import dev.kush.backend.customer.repository.CustomerRepository;
-import dev.kush.backend.account.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -31,12 +31,14 @@ public class CustomerServiceImpl implements CustomerService{
     private final CustomerRepository customerRepository;
     private final AccountRepository accountRepository;
     private final TransactionRepository transactionRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public CustomerServiceImpl(CustomerRepository customerRepository, AccountRepository accountRepository, TransactionRepository transactionRepository) {
+    public CustomerServiceImpl(CustomerRepository customerRepository, AccountRepository accountRepository, TransactionRepository transactionRepository, PasswordEncoder passwordEncoder) {
         this.customerRepository = customerRepository;
         this.accountRepository = accountRepository;
         this.transactionRepository = transactionRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -48,8 +50,8 @@ public class CustomerServiceImpl implements CustomerService{
             );
 
             // match received password with existing password
-            if(!customer.getPassword().equals(loginCustomer.getPassword())) {
-                throw new UnprocessableEntityException("Invalid password");
+            if(!passwordEncoder.matches(loginCustomer.getPassword(), customer.getPassword())) {
+                throw new UnauthorizedUserException("Invalid password");
             }
 
             // get account associated with customer
@@ -123,8 +125,8 @@ public class CustomerServiceImpl implements CustomerService{
             );
 
 
-            if (!customer.getPassword().equals(loginCustomerWrapper.getPassword())){
-                throw new UnauthorizedUserException("Invalid password");
+        if(!passwordEncoder.matches(loginCustomerWrapper.getPassword(), customer.getPassword())) {
+            throw new UnauthorizedUserException("Invalid password");
             }
 
             customerRepository.delete(customer);
