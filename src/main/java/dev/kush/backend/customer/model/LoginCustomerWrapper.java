@@ -1,4 +1,4 @@
-package dev.kush.backend.frontendDetail.model;
+package dev.kush.backend.customer.model;
 
 import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;

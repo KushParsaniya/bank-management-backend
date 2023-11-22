@@ -1,7 +1,7 @@
 package dev.kush.backend.account.controller;
 
 import dev.kush.backend.account.models.DepositMoneyWrapper;
-import dev.kush.backend.frontendDetail.model.SendDetailWrapper;
+import dev.kush.backend.customer.model.SendDetailWrapper;
 import dev.kush.backend.account.models.TransferMoneyWrapper;
 import dev.kush.backend.account.service.AccountService;
 import jakarta.validation.Valid;

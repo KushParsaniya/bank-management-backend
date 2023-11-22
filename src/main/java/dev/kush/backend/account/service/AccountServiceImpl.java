@@ -8,7 +8,7 @@ import dev.kush.backend.customer.repository.CustomerRepository;
 import dev.kush.backend.exception.BadRequestException;
 import dev.kush.backend.exception.UnprocessableEntityException;
 import dev.kush.backend.exception.UserNotFoundException;
-import dev.kush.backend.frontendDetail.model.SendDetailWrapper;
+import dev.kush.backend.customer.model.SendDetailWrapper;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

@@ -1,4 +1,4 @@
-package dev.kush.backend.frontendDetail.model;
+package dev.kush.backend.customer.model;
 
 import dev.kush.backend.account.models.AccountType;
 import dev.kush.backend.customer.model.Role;
