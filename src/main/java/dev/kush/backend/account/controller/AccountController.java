@@ -4,6 +4,7 @@ import dev.kush.backend.account.models.DepositMoneyWrapper;
 import dev.kush.backend.frontendDetail.model.SendDetailWrapper;
 import dev.kush.backend.account.models.TransferMoneyWrapper;
 import dev.kush.backend.account.service.AccountService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,12 +29,12 @@ public class AccountController {
 
 
     @PutMapping("/transfer")
-    public ResponseEntity<String> transfer(@RequestBody TransferMoneyWrapper transferMoneyWrapper) {
+    public ResponseEntity<String> transfer(@Valid @RequestBody TransferMoneyWrapper transferMoneyWrapper) {
         return accountService.transfer(transferMoneyWrapper);
     }
 
     @PutMapping("/deposit")
-    public ResponseEntity<String> deposit(@RequestBody DepositMoneyWrapper depositMoneyWrapper) {
+    public ResponseEntity<String> deposit(@Valid @RequestBody DepositMoneyWrapper depositMoneyWrapper) {
         return accountService.deposit(depositMoneyWrapper);
     }
 }

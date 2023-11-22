@@ -3,6 +3,8 @@ package dev.kush.backend.cards.creditCards.model;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import dev.kush.backend.account.models.Account;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.Min;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,6 +21,7 @@ public class CreditCard {
     private Long id;
     private String cardNumber;
     private String cvv;
+    @Min(value = 0,message = "credit limit should be greater than zero")
     private Long creditLimit;
     private Long remainingLimit;
     private String expirationDate;

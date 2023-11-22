@@ -3,6 +3,8 @@ package dev.kush.backend.customer.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import dev.kush.backend.account.models.Account;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,8 +20,11 @@ public class Customer {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
+    @Size(min = 2 , message = "username should have at least 2 characters.")
     private String userName;
+    @Email(message = "Invalid email address")
     private String email;
+    @Size(min = 4 , message = "password should have at least 4 characters")
     private String password;
 
     @Enumerated(value = EnumType.STRING)
