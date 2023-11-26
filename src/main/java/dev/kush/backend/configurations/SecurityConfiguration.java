@@ -2,6 +2,7 @@ package dev.kush.backend.configurations;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -16,6 +17,8 @@ public class SecurityConfiguration {
 //                auth -> auth.anyRequest().permitAll()
                 auth -> auth.anyRequest().authenticated()
         )
+                .formLogin(Customizer.withDefaults())
+                .httpBasic(Customizer.withDefaults())
         .csrf(AbstractHttpConfigurer::disable);
 
         return http.build();
