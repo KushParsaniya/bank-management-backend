@@ -33,10 +33,8 @@ public class SampleData {
 
             account1.setCreditCards(List.of(creditCard1));
             account2.setCreditCards(List.of(creditCard2));
-
-
+            // save it to db only one time
             customerRepository.saveAll(List.of(customer1, customer2));
-
 
         };
     }
