@@ -10,6 +10,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static dev.kush.backend.customer.model.Role.ADMIN;
@@ -28,7 +29,7 @@ public class SampleData {
             Account account2 = new Account(5000L, AccountType.SAVING,customer2);
             customer2.setAccount(account2);
 
-            CreditCard creditCard1 = new CreditCard("1234464727123465","123",25000L,23000L,"2025-07-13",account1);
+            CreditCard creditCard1 = new CreditCard("1234464727123465","123",25000L,23000L, LocalDate.now().plusYears(3).toString(),account1);
             CreditCard creditCard2 = new CreditCard("8588949832285738","198",25000L,22000L,"2025-09-11",account2);
 
             account1.setCreditCards(List.of(creditCard1));

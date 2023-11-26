@@ -2,6 +2,7 @@ package dev.kush.backend.account.models;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,6 +21,7 @@ public class Transaction {
     private String time;
     @Enumerated(value = EnumType.STRING)
     private TransactionType description;
+    @Min(value = 0,message = "amount should be greater than zero")
     private Long amount;
 
     @ManyToOne(cascade = ALL)

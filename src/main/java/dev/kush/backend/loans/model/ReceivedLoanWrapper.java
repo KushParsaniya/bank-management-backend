@@ -1,6 +1,7 @@
 package dev.kush.backend.loans.model;
 
 
+import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,6 +13,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ReceivedLoanWrapper {
     private LoanType loanType;
+    @Min(value = 0,message = "Loan amount should be greater than zero")
     private Long loanAmount;
     private Long accountId;
 }

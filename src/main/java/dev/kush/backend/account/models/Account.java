@@ -10,6 +10,7 @@ import dev.kush.backend.cards.debitCards.model.DebitCard;
 import dev.kush.backend.loans.model.Loan;
 import dev.kush.backend.loans.model.LoanRequest;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -28,6 +29,7 @@ public class Account {
     @GeneratedValue(strategy = IDENTITY)
     // account number
     private Long id;
+    @Min(value = 0 , message = "Balance should be greater than zero.")
     private Long balance;
     @Enumerated(EnumType.STRING)
     private AccountType accountType;

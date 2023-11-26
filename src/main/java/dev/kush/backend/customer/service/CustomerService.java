@@ -1,8 +1,8 @@
 package dev.kush.backend.customer.service;
 
-import dev.kush.backend.frontendDetail.model.LoginCustomerWrapper;
-import dev.kush.backend.frontendDetail.model.SendDetailWrapper;
-import dev.kush.backend.frontendDetail.model.SignUpDetailWrapper;
+import dev.kush.backend.customer.model.LoginCustomerWrapper;
+import dev.kush.backend.customer.model.SendDetailWrapper;
+import dev.kush.backend.customer.model.SignUpDetailWrapper;
 import org.springframework.http.ResponseEntity;
 
 public interface CustomerService {

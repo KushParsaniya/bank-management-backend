@@ -5,6 +5,7 @@ import dev.kush.backend.loans.model.ReceivedLoanWrapper;
 import dev.kush.backend.loans.model.SendRequestLoan;
 import dev.kush.backend.loans.service.LoanService;
 import dev.kush.backend.loans.service.LoanServiceImpl;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,7 +34,7 @@ public class LoanController {
     }
 
     @PostMapping("/applyLoan")
-    public ResponseEntity<String> applyLoan(@RequestBody ReceivedLoanWrapper receivedLoanWrapper){
+    public ResponseEntity<String> applyLoan(@Valid @RequestBody ReceivedLoanWrapper receivedLoanWrapper){
         return loanService.applyLoan(receivedLoanWrapper);
     }
 

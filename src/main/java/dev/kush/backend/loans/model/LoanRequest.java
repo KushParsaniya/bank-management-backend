@@ -3,6 +3,7 @@ package dev.kush.backend.loans.model;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import dev.kush.backend.account.models.Account;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,6 +19,7 @@ import static jakarta.persistence.CascadeType.*;
 public class LoanRequest {
     @Id @GeneratedValue
     private Long id;
+    @Min(value = 0,message = "Applied amount should be greater than zero")
     private Long appliedAmount;
     private Float loanInterest;
 

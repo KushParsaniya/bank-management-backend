@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import dev.kush.backend.account.models.Account;
 import dev.kush.backend.loans.model.LoanType;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,6 +21,7 @@ public class Loan {
     private Long id;
     @Enumerated(EnumType.STRING)
     private LoanType loanType;
+    @Min(value = 0,message = "Loan amount should be greater than zero")
     private Long loanAmount;
     private Float interest;
 
