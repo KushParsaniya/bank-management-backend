@@ -12,9 +12,9 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfiguration {
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-
         http.authorizeHttpRequests(
-                auth -> auth.anyRequest().permitAll()
+//                auth -> auth.anyRequest().permitAll()
+                auth -> auth.anyRequest().authenticated()
         )
         .csrf(AbstractHttpConfigurer::disable);
 
