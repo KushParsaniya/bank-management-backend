@@ -1,4 +1,4 @@
-package dev.kush.backend.configurations;
+package dev.kush.backend.configurations.security;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
