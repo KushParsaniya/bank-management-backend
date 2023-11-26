@@ -64,10 +64,10 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
 					<image>
-						<name>
-							kushparsaniya/easybank-${project.artifactId}:${project.version}
-						</name>
-						<pullPolicy>IF_NOT_PRESENT</pullPolicy>
+<!--						<name>-->
+<!--							kushparsaniya/easybank-${project.artifactId}:${project.version}-->
+<!--						</name>-->
+<!--						<pullPolicy>IF_NOT_PRESENT</pullPolicy>-->
 						<builder>paketobuildpacks/builder-jammy-base:latest</builder>
 					</image>
 					<excludes>
