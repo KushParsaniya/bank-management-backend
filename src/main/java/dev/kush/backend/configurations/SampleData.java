@@ -15,9 +15,9 @@ import java.util.List;
 import static dev.kush.backend.customer.model.Role.ADMIN;
 import static dev.kush.backend.customer.model.Role.USER;
 
-@Configuration
+//@Configuration
 public class SampleData {
-    @Bean
+//    @Bean
     CommandLineRunner commandLineRunner(CustomerRepository customerRepository, AccountRepository accountRepository){
         return args -> {
             Customer customer1 = new Customer("Kush Parsaniya","kush@gmail.com","kush1234", ADMIN);
