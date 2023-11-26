@@ -31,8 +31,9 @@ public class SecurityConfiguration {
 //                auth -> auth.anyRequest().permitAll()
                 auth -> auth.anyRequest().authenticated()
         )
-                .httpBasic(Customizer.withDefaults())
-        .csrf(AbstractHttpConfigurer::disable);
+//                .cors(cors -> {})
+        .csrf(AbstractHttpConfigurer::disable)
+                .httpBasic(Customizer.withDefaults());
 
         return http.build();
     }
