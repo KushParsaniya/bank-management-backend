@@ -23,7 +23,7 @@ public class CustomerController {
 
 
     // login to account
-//    @CrossOrigin(origins = "http://localhost:3000/",allowedHeaders = "*")
+    @CrossOrigin(origins = "http://localhost:3000/",allowedHeaders = "*")
     @PostMapping("/login")
     public ResponseEntity<SendDetailWrapper> login(@Valid @RequestBody LoginCustomerWrapper loginCustomer){
         return customerService.login(loginCustomer);
