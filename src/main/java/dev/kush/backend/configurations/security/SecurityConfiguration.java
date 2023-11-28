@@ -52,7 +52,7 @@ public class SecurityConfiguration {
         CorsConfiguration config = new CorsConfiguration();
         config.addAllowedOrigin("https://bank-management-frontend.vercel.app"); // Allow all origins (customize as needed)
         config.addAllowedOrigin("https://easybankdev.vercel.app");
-        config.addAllowedOrigin("http://localhost:3000"); // Allow all origins (customize as needed)
+        // config.addAllowedOrigin("http://localhost:3000"); // Allow all origins (customize as needed)
         config.addAllowedMethod("*"); // Allow all HTTP methods
         config.addAllowedHeader("*"); // Allow all headers
         config.setAllowCredentials(true); // Allow credentials // Allow all origins (customize as needed)
