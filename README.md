@@ -44,8 +44,8 @@ make sure you have the following installed:
 - Docker
 - Docker Compose
 
-Now First clone docker-compose.yml file from this project
--- In Place of password enter password(any password will work)
+Now First clone docker-compose.yml file from this project's **main** branch(not master)
+- In Place of password enter password(any password will work)
 and follow this steps
 
 
