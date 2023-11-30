@@ -1,3 +1,4 @@
+# EasyBank
 # Bank Management System
 
 This is a comprehensive bank management system developed using Spring Boot for the backend, Bootstrap and React for the front end, and PostgreSQL for the database.
