@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * The `CustomerController` class is responsible for handling HTTP requests related to customers.
+ */
 @RestController
 @RequestMapping
 public class CustomerController {
