@@ -16,6 +16,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.List;
+
 
 @Configuration
 @EnableWebSecurity
@@ -54,6 +56,7 @@ public class SecurityConfiguration {
         config.addAllowedOrigin("https://bank-management-frontend.vercel.app"); // Allow all origins (customize as needed)
         config.addAllowedOrigin("https://easybankdev.vercel.app");
         config.addAllowedOrigin("http://localhost:3000"); // Allow all origins (customize as needed)
+        config.setAllowedOrigins(List.of("http://localhost:3000","https://easybankdev.vercel.app","https://bank-management-frontend.vercel.app"));
         config.addAllowedMethod("*"); // Allow all HTTP methods
         config.addAllowedHeader("*"); // Allow all headers
         config.setAllowCredentials(true); // Allow credentials // Allow all origins (customize as needed)

@@ -6,12 +6,12 @@ import dev.kush.backend.account.models.TransactionWrapper;
 import dev.kush.backend.account.repository.AccountRepository;
 import dev.kush.backend.account.repository.TransactionRepository;
 import dev.kush.backend.customer.model.Customer;
+import dev.kush.backend.customer.model.SendDetailWrapper;
 import dev.kush.backend.customer.repository.CustomerRepository;
 import dev.kush.backend.exception.ConflictException;
 import dev.kush.backend.exception.UnauthorizedUserException;
 import dev.kush.backend.exception.UserNotFoundException;
 import dev.kush.backend.customer.model.LoginCustomerWrapper;
-import dev.kush.backend.customer.model.SendDetailWrapper;
 import dev.kush.backend.customer.model.SignUpDetailWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,9 +22,15 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import static dev.kush.backend.customer.model.Role.USER;
 
+/**
+ * This class implements the CustomerService interface and provides the implementation
+ * for the login, create, and deleteCustomer methods. It retrieves data from the
+ * customerRepository, accountRepository, and transactionRepository to perform the required operations.
+ */
 @Service
 public class CustomerServiceImpl implements CustomerService{
 
@@ -63,16 +69,13 @@ public class CustomerServiceImpl implements CustomerService{
             List<Transaction> transactions = transactionRepository.findAllReferenceByAccountId(account.getId()).orElse(List.of());
 
             // now convert this transaction to transactionWrapper
-            List<TransactionWrapper> transactionWrappers = new ArrayList<>();
-
-            for(Transaction transaction: transactions){
-                transactionWrappers.add(new TransactionWrapper(
-                       transaction.getDate(),
-                       transaction.getTime(),
-                       transaction.getDescription(),
-                       transaction.getAmount()
-                ));
-            }
+            List<TransactionWrapper> transactionWrappers = transactions.stream().map(transaction -> new TransactionWrapper(
+                            transaction.getDate(),
+                            transaction.getTime(),
+                            transaction.getDescription(),
+                            transaction.getAmount()
+                    )
+            ).collect(Collectors.toList());
 
             // creating a wrapper to send to frontend which is SendDetailWrapper
 
@@ -133,4 +136,5 @@ public class CustomerServiceImpl implements CustomerService{
             return new ResponseEntity<>("successfully deleted",HttpStatus.OK);
 
     }
+
 }
