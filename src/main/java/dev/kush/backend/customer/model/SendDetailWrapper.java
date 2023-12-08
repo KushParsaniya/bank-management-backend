@@ -9,7 +9,7 @@ public record SendDetailWrapper(
         String username,
         String email,
         Long accountId,
-        Long Balance,
+        Long balance,
         AccountType type,
         Role role,
         List<TransactionWrapper>transactions) {
