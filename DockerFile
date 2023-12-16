@@ -5,7 +5,7 @@ FROM openjdk:latest
 WORKDIR /app
 
 # Copy the JAR file into the container
-COPY target/backend-0.0.1-SNAPSHOT.jar /app/backend-0.0.1-SNAPSHOT.jar.jar
+COPY target/backend-0.0.1-SNAPSHOT /app/backend-0.0.1-SNAPSHOT.jar.jar
 
 # Expose the port your app runs on (if necessary)
 EXPOSE 8080
