@@ -6,7 +6,7 @@ ADD target/backend-0.0.1-SNAPSHOT.jar easybank-docker.jar
 # Set the working directory in the container
 # Download PostgreSQL JDBC driver (adjust the version as needed)
 RUN mkdir C:\postgresql
-RUN powershell -Command Invoke-WebRequest -Uri 'https://jdbc.postgresql.org/download/postgresql-{VERSION}.jar' -OutFile 'C:\postgresql\postgresql.jar'
+RUN powershell -Command Invoke-WebRequest -Uri 'https://jdbc.postgresql.org/download/postgresql-8.jar' -OutFile 'C:\postgresql\postgresql.jar'
 
 # Set the working directory
 WORKDIR /app
