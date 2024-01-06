@@ -50,7 +50,7 @@ public class SecurityConfiguration {
     @Bean
     public CorsConfigurationSource corsConfigurationSource(){
         CorsConfiguration config = new CorsConfiguration();
-        config.addAllowedOrigin("http://localhost:3000"); // Allow all origins (customize as needed)
+        config.addAllowedOrigin("https://easybankdev.vercel.app/"); // Allow all origins (customize as needed)
         config.addAllowedMethod("*"); // Allow all HTTP methods
         config.addAllowedHeader("*"); // Allow all headers
         config.setAllowCredentials(true); // Allow credentials // Allow all origins (customize as needed)

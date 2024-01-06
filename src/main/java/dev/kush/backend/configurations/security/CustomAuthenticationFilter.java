@@ -1,10 +1,13 @@
 package dev.kush.backend.configurations.security;
 
 
+import dev.kush.backend.customer.service.SecuredCustomerService;
+import dev.kush.backend.customer.service.SecuredCustomerServiceImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -19,11 +22,12 @@ import java.util.Base64;
 @Component
 public class CustomAuthenticationFilter extends OncePerRequestFilter {
 
-    private final UserDetailsService userDetailsService;
+    private final SecuredCustomerService securedCustomerService;
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
 
-    public CustomAuthenticationFilter(UserDetailsService userDetailsService) {
-        this.userDetailsService = userDetailsService;
+    @Autowired
+    public CustomAuthenticationFilter(SecuredCustomerServiceImpl securedCustomerService) {
+        this.securedCustomerService = securedCustomerService;
     }
 
 
@@ -40,7 +44,7 @@ public class CustomAuthenticationFilter extends OncePerRequestFilter {
             String username = usernamePassword[0];
             String password = usernamePassword[1];
 
-            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+            UserDetails userDetails = securedCustomerService.loadUserByUsername(username);
 
             if (passwordEncoder.matches(password,userDetails.getPassword())) {
                 Authentication authentication = new CustomAuthenticationToken(userDetails);
