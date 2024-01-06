@@ -22,11 +22,11 @@ import java.util.Base64;
 @Component
 public class CustomAuthenticationFilter extends OncePerRequestFilter {
 
-    private final SecuredCustomerService securedCustomerService;
+    private final UserDetailsService securedCustomerService;
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
 
     @Autowired
-    public CustomAuthenticationFilter(SecuredCustomerServiceImpl securedCustomerService) {
+    public CustomAuthenticationFilter(UserDetailsService securedCustomerService) {
         this.securedCustomerService = securedCustomerService;
     }
 
