@@ -1,31 +1,36 @@
 package dev.kush.backend.configurations.security;
 
 import dev.kush.backend.customer.service.SecuredCustomerService;
-import dev.kush.backend.customer.service.SecuredCustomerServiceImpl;
+import dev.kush.backend.jwt.JwtFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.List;
 
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
 
-    private SecuredCustomerService securedCustomerService;
+    private final SecuredCustomerService securedCustomerService;
+    private final JwtFilter jwtFilter;
+
+    private final AuthenticationProvider authenticationProvider;
 
     @Autowired
-    public SecurityConfiguration(SecuredCustomerServiceImpl securedCustomerService) {
+    public SecurityConfiguration(SecuredCustomerService securedCustomerService, JwtFilter jwtFilter, AuthenticationProvider authenticationProvider) {
         this.securedCustomerService = securedCustomerService;
+        this.jwtFilter = jwtFilter;
+        this.authenticationProvider = authenticationProvider;
     }
 
     @Bean
@@ -33,14 +38,31 @@ public class SecurityConfiguration {
         http.authorizeHttpRequests(
 //                auth -> auth.anyRequest().permitAll()
 
-                auth -> auth.
-                        requestMatchers("/create","/delete").permitAll().
-                        anyRequest().authenticated()
-        )
-                .cors(Customizer.withDefaults())
-        .csrf(AbstractHttpConfigurer::disable)
+                        auth -> auth.
+                                requestMatchers(
+                                        "/account/info/cards/createCreditCard/**",
+                                        "/account/info/cards/deleteRequestCreditCard/**",
+                                        "/account/info/cards/getAllCreditCardsRequests",
+                                        "/account/info/cards/createDebitCard/**",
+                                        "/account/info/cards/deleteRequestDebitCard/*8",
+                                        "/account/info/cards/getAllDebitCardsRequests",
+                                        "/account/info/loans/createLoan/**",
+                                        "/account/info/loans/deleteLoanRequest/**",
+                                        "/account/info/loans/getAllLoanRequests",
+                                        "account/info/transfer",
+                                        "account/info/deposit"
+                                        ).hasRole("ADMIN")
+                                .requestMatchers("/create", "/delete","/login","/signin").permitAll()
+                                .anyRequest().hasAnyRole("ADMIN","USER")
+                )
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+                .authenticationProvider(authenticationProvider)
+                .cors(cors -> cors.configurationSource(
+                        request -> corsConfiguration()
+                ))
+                .csrf(AbstractHttpConfigurer::disable)
                 .httpBasic(Customizer.withDefaults())
-//                .formLogin(Customizer.withDefaults())
+                .formLogin(Customizer.withDefaults())
         ;
 
 
@@ -48,22 +70,16 @@ public class SecurityConfiguration {
     }
 
     @Bean
-    public CorsConfigurationSource corsConfigurationSource(){
-        CorsConfiguration config = new CorsConfiguration();
-        config.addAllowedOrigin("http://localhost:3000"); // Allow all origins (customize as needed)
-        config.addAllowedMethod("*"); // Allow all HTTP methods
-        config.addAllowedHeader("*"); // Allow all headers
-        config.setAllowCredentials(true); // Allow credentials // Allow all origins (customize as needed)
+    public CorsConfiguration corsConfiguration() {
+        CorsConfiguration cors = new CorsConfiguration();
+        cors.setAllowedOrigins(List.of("https://easybankdev.vercel.app"));
+        cors.setMaxAge(3600L);
+        cors.setAllowedMethods(List.of("*"));
+        cors.setExposedHeaders(List.of("Authorization"));
+        cors.setAllowCredentials(true);
 
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", config);
-
-        return source;
+        return cors;
     }
 
 
-    @Bean
-    public PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder(10);
-    }
 }

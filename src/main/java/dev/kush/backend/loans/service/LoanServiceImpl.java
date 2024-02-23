@@ -140,7 +140,7 @@ public class LoanServiceImpl implements LoanService{
                 }
 
                 sendRequestLoans.add(new SendRequestLoan(
-                        customer.getUserName(),
+                        customer.getName(),
                         customer.getEmail(),
                         account.getBalance(),
                         account.getId(),

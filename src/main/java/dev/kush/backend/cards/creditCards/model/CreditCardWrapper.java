@@ -1,6 +1,5 @@
 package dev.kush.backend.cards.creditCards.model;
 
-import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

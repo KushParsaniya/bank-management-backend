@@ -4,11 +4,11 @@ import dev.kush.backend.account.models.*;
 import dev.kush.backend.account.repository.AccountRepository;
 import dev.kush.backend.account.repository.TransactionRepository;
 import dev.kush.backend.customer.model.Customer;
+import dev.kush.backend.customer.model.SendDetailWrapper;
 import dev.kush.backend.customer.repository.CustomerRepository;
 import dev.kush.backend.exception.BadRequestException;
 import dev.kush.backend.exception.UnprocessableEntityException;
 import dev.kush.backend.exception.UserNotFoundException;
-import dev.kush.backend.customer.model.SendDetailWrapper;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -66,7 +66,7 @@ public class AccountServiceImpl implements AccountService {
             // creating a wrapper to send to frontend which is SendDetailWrapper
 
             SendDetailWrapper sendDetailWrapper = new SendDetailWrapper(
-                    customer.getUserName(),
+                    customer.getName(),
                     customer.getEmail(),
                     account.getId(),
                     account.getBalance(),

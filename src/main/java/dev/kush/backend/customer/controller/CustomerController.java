@@ -1,7 +1,7 @@
 package dev.kush.backend.customer.controller;
 
 import dev.kush.backend.customer.model.LoginCustomerWrapper;
-import dev.kush.backend.customer.model.SendDetailWrapper;
+import dev.kush.backend.customer.model.SendDetailWrapperWithJwt;
 import dev.kush.backend.customer.model.SignUpDetailWrapper;
 import dev.kush.backend.customer.service.CustomerService;
 import dev.kush.backend.customer.service.CustomerServiceImpl;
@@ -23,9 +23,8 @@ public class CustomerController {
 
 
     // login to account
-    @CrossOrigin(origins = "http://localhost:3000/",allowedHeaders = "*")
-    @PostMapping("/login")
-    public ResponseEntity<SendDetailWrapper> login(@Valid @RequestBody LoginCustomerWrapper loginCustomer){
+    @PostMapping("/signin")
+    public ResponseEntity<SendDetailWrapperWithJwt> login(@Valid @RequestBody LoginCustomerWrapper loginCustomer){
         return customerService.login(loginCustomer);
     }
 

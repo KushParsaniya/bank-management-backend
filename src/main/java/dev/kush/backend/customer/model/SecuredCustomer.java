@@ -1,6 +1,5 @@
 package dev.kush.backend.customer.model;
 
-import dev.kush.backend.customer.model.Customer;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,7 +22,7 @@ public class SecuredCustomer implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(customer.getRole().name()));
+        authorities.add(new SimpleGrantedAuthority(customer.getRole()));
         return authorities;
     }
 

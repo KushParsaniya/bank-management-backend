@@ -9,23 +9,21 @@ import dev.kush.backend.customer.repository.CustomerRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
 import java.util.List;
 
-import static dev.kush.backend.customer.model.Role.ADMIN;
-import static dev.kush.backend.customer.model.Role.USER;
-
-//@Configuration
+@Configuration
 public class SampleData {
-//    @Bean
-    CommandLineRunner commandLineRunner(CustomerRepository customerRepository, AccountRepository accountRepository){
+    @Bean
+    CommandLineRunner commandLineRunner(CustomerRepository customerRepository, AccountRepository accountRepository, PasswordEncoder passwordEncoder){
         return args -> {
-            Customer customer1 = new Customer("Kush Parsaniya","kush@gmail.com","kush1234", ADMIN);
+            Customer customer1 = new Customer("Kush Parsaniya","kush@gmail.com", passwordEncoder.encode("kush1234"), "ROLE_ADMIN",false,true);
             Account account1 = new Account(10000L, AccountType.ADMIN,customer1);
             customer1.setAccount(account1);
 
-            Customer customer2 = new Customer("Abhi Parsaniya","abhi@gmail.com","abhi1234", USER);
+            Customer customer2 = new Customer("Abhi Parsaniya","abhi@gmail.com",passwordEncoder.encode("abhi1234"), "ROLE_USER",false,true);
             Account account2 = new Account(5000L, AccountType.SAVING,customer2);
             customer2.setAccount(account2);
 
