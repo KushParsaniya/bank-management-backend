@@ -1,0 +1,5 @@
+package dev.kush.backend.constants;
+
+public class JwtConstants {
+    public static final String JWT_SECRET = "gzY+Y691zTJpRQSf77YRMvxUjymuK3h5rjZQo7Bc7KhJMUXDYZbS0AFJnxV9kwZBMOgijOjXEod9FvqSBM6Z8vJ2MGJK5XS6yM3PepBwlKGuNG0MaSQz62A/+JZHN1M+UU2RjfnOO4OrwtUNQmp1Rm5chFppymk4+N4OoihoglNBL4/BrdNYjS3t9QDkl+nwVSnzJr8jYQOhL8jc6QhugJgzHNRN85SB1eELynhi4G3yB36Cld2jVUrQU92b8gHU11fut839LTS4VSdFg01M4c20ya9cCs7HJpUzYDnlS3rk+ISWCZp7xx34O+vCQIK1hdKm+9FqopZpvpQC5pPXzS0W3j4Y4ceh04M+MNCoPHs=";
+}
