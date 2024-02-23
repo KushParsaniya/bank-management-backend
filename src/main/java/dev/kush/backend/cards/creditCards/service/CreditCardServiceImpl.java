@@ -1,15 +1,14 @@
 package dev.kush.backend.cards.creditCards.service;
 
 import dev.kush.backend.account.models.Account;
+import dev.kush.backend.account.repository.AccountRepository;
 import dev.kush.backend.cards.creditCards.model.CreditCard;
 import dev.kush.backend.cards.creditCards.model.CreditCardRequest;
 import dev.kush.backend.cards.creditCards.model.CreditCardWrapper;
-import dev.kush.backend.account.repository.AccountRepository;
 import dev.kush.backend.cards.creditCards.model.SendCreditCardReqWrapper;
 import dev.kush.backend.cards.creditCards.repository.CreditCardRepository;
 import dev.kush.backend.cards.creditCards.repository.CreditCardRequestRepository;
 import dev.kush.backend.cards.service.CardGeneratorService;
-import dev.kush.backend.cards.service.CardGeneratorServiceImpl;
 import dev.kush.backend.customer.model.Customer;
 import dev.kush.backend.exception.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -150,7 +149,7 @@ public class CreditCardServiceImpl implements CreditCardService{
                 }
 
                 sendCreditCardReqWrappers.add(new SendCreditCardReqWrapper(
-                        customer.getUserName(),
+                        customer.getName(),
                         customer.getEmail(),
                         account.getId(),
                         account.getBalance(),

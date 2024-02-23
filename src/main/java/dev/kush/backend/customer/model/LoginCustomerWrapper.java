@@ -12,6 +12,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class LoginCustomerWrapper {
     @Email(message = "Invalid email address")
-    private String email;
+    private java.lang.String email;
     private String password;
 }

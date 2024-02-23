@@ -2,7 +2,6 @@ package dev.kush.backend.loans.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import dev.kush.backend.account.models.Account;
-import dev.kush.backend.loans.model.LoanType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import lombok.Getter;

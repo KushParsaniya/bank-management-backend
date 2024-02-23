@@ -1,7 +1,6 @@
 package dev.kush.backend.customer.model;
 
 import dev.kush.backend.account.models.AccountType;
-import dev.kush.backend.customer.model.Role;
 import dev.kush.backend.account.models.TransactionWrapper;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,12 +14,12 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SendDetailWrapper {
-    private String username;
-    private String email;
+    private java.lang.String username;
+    private java.lang.String email;
     private Long accountId;
     private Long Balance;
     private AccountType type;
-    private Role role;
+    private String string;
     private List<TransactionWrapper> transactions;
 
 }

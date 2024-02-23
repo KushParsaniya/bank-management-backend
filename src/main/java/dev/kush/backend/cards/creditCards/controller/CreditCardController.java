@@ -33,18 +33,18 @@ public class CreditCardController {
         return creditCardService.getCreditCard(accountId);
     }
 
-    @GetMapping("/requestCreditCard/{accountId}")
+    @GetMapping("requestCreditCard/{accountId}")
     public ResponseEntity<String> reqCreditCard(@PathVariable Long accountId){
         return creditCardService.reqCreditCard(accountId);
     }
 
 //    @CrossOrigin(origins = "http://localhost:3000/",allowedHeaders = "*")
-    @DeleteMapping("/deleteRequestCreditCard/{requestId}")
+    @DeleteMapping("deleteRequestCreditCard/{requestId}")
     public ResponseEntity<String> deleteRequestCreditCard(@PathVariable Long requestId){
         return creditCardService.deleteRequestCreditCard(requestId);
     }
 
-    @GetMapping("/getAllCreditCardsRequests")
+    @GetMapping("getAllCreditCardsRequests")
     public ResponseEntity<List<SendCreditCardReqWrapper>> getAllCreditCardsRequests(){
         return creditCardService.getAllCreditCardsRequests();
     }

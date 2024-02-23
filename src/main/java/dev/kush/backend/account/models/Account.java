@@ -2,11 +2,11 @@ package dev.kush.backend.account.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import dev.kush.backend.cards.creditCards.model.CreditCard;
 import dev.kush.backend.cards.creditCards.model.CreditCardRequest;
+import dev.kush.backend.cards.debitCards.model.DebitCard;
 import dev.kush.backend.cards.debitCards.model.DebitCardRequest;
 import dev.kush.backend.customer.model.Customer;
-import dev.kush.backend.cards.creditCards.model.CreditCard;
-import dev.kush.backend.cards.debitCards.model.DebitCard;
 import dev.kush.backend.loans.model.Loan;
 import dev.kush.backend.loans.model.LoanRequest;
 import jakarta.persistence.*;
@@ -17,10 +17,11 @@ import lombok.Setter;
 
 import java.util.List;
 
-import static jakarta.persistence.CascadeType.*;
+import static jakarta.persistence.CascadeType.ALL;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
+@Table(name = "bank_account")
 @Getter
 @Setter
 @NoArgsConstructor
