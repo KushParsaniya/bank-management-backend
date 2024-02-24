@@ -89,7 +89,7 @@ public class JwtFilter extends OncePerRequestFilter {
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         final String servletPath = request.getServletPath();
         Set<String> nonFilteredPaths = new HashSet<>(Arrays.asList(
-                "/create", "/delete","/login","/signin"
+                "/create", "/delete","/login","/signin","/confirm"
 
         ));
         return nonFilteredPaths.contains(servletPath);

@@ -1,4 +1,4 @@
-package dev.kush.backend.customer.model;
+package dev.kush.backend.customer.dto;
 
 import dev.kush.backend.account.models.AccountType;
 import jakarta.validation.constraints.Email;
@@ -12,7 +12,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class SignUpDetailWrapper {
+public class SignUpDetailDto {
     @Size(min = 2 , message = "username should be at least 2 characters.")
     private String username;
     @Email(message = "Invalid email address")

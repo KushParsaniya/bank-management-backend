@@ -1,4 +1,4 @@
-package dev.kush.backend.customer.model;
+package dev.kush.backend.customer.dto;
 
 import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
@@ -10,8 +10,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class LoginCustomerWrapper {
+public class LoginCustomerDto {
     @Email(message = "Invalid email address")
-    private java.lang.String email;
+    private String email;
     private String password;
 }

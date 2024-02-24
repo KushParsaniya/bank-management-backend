@@ -1,6 +1,7 @@
 package dev.kush.backend.customer.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import dev.kush.backend.account.models.Account;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -25,24 +26,28 @@ public class Customer implements UserDetails {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
     @Size(min = 2 , message = "username should have at least 2 characters.")
-    private java.lang.String name;
+    private String name;
     @Email(message = "Invalid email address")
-    private java.lang.String email;
+    private String email;
     @Size(min = 4 , message = "password should have at least 4 characters")
-    private java.lang.String password;
+    private String password;
 
-    private java.lang.String role;
+    private String role;
 
     private boolean locked;
 
     private boolean enabled;
 
-    @OneToOne(mappedBy = "customer",cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "customer",cascade = CascadeType.ALL,orphanRemoval = true)
     @JsonBackReference
     private Account account;
 
+    @OneToMany(mappedBy = "customer",cascade = CascadeType.ALL,orphanRemoval = true)
+    @JsonIgnore
+    private List<ConfirmationToken> confirmationTokens;
 
-    public Customer(java.lang.String name, java.lang.String email, java.lang.String password, java.lang.String role, boolean locked, boolean enabled) {
+
+    public Customer(String name, String email, String password, String role, boolean locked, boolean enabled) {
         this.name = name;
         this.email = email;
         this.password = password;
@@ -51,7 +56,7 @@ public class Customer implements UserDetails {
         this.enabled = enabled;
     }
 
-    public Customer(java.lang.String name, java.lang.String email, java.lang.String password, java.lang.String role, boolean locked, boolean enabled, Account account) {
+    public Customer(String name, String email, String password, String role, boolean locked, boolean enabled, Account account) {
         this.name = name;
         this.email = email;
         this.password = password;

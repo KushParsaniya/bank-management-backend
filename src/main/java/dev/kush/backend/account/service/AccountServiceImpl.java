@@ -4,7 +4,7 @@ import dev.kush.backend.account.models.*;
 import dev.kush.backend.account.repository.AccountRepository;
 import dev.kush.backend.account.repository.TransactionRepository;
 import dev.kush.backend.customer.model.Customer;
-import dev.kush.backend.customer.model.SendDetailWrapper;
+import dev.kush.backend.customer.dto.SendDetailDto;
 import dev.kush.backend.customer.repository.CustomerRepository;
 import dev.kush.backend.exception.BadRequestException;
 import dev.kush.backend.exception.UnprocessableEntityException;
@@ -38,7 +38,7 @@ public class AccountServiceImpl implements AccountService {
 
 
     @Override
-    public ResponseEntity<SendDetailWrapper> getByAccountId(Long accountId) {
+    public ResponseEntity<SendDetailDto> getByAccountId(Long accountId) {
 
             if (accountId == null) {
                  throw new BadRequestException("Please enter a valid accountId");
@@ -65,7 +65,7 @@ public class AccountServiceImpl implements AccountService {
 
             // creating a wrapper to send to frontend which is SendDetailWrapper
 
-            SendDetailWrapper sendDetailWrapper = new SendDetailWrapper(
+            SendDetailDto sendDetailDto = new SendDetailDto(
                     customer.getName(),
                     customer.getEmail(),
                     account.getId(),
@@ -75,7 +75,7 @@ public class AccountServiceImpl implements AccountService {
                     transactionWrappers
             );
 
-            return new ResponseEntity<>(sendDetailWrapper, HttpStatus.OK);
+            return new ResponseEntity<>(sendDetailDto, HttpStatus.OK);
 
     }
 

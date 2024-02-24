@@ -1,10 +1,10 @@
 package dev.kush.backend.customer.controller;
 
-import dev.kush.backend.customer.model.LoginCustomerWrapper;
-import dev.kush.backend.customer.model.SendDetailWrapperWithJwt;
-import dev.kush.backend.customer.model.SignUpDetailWrapper;
+import dev.kush.backend.customer.dto.LoginCustomerDto;
+import dev.kush.backend.customer.dto.SendDetailDtoWithJwt;
+import dev.kush.backend.customer.dto.SignUpDetailDto;
 import dev.kush.backend.customer.service.CustomerService;
-import dev.kush.backend.customer.service.CustomerServiceImpl;
+import dev.kush.backend.customer.service.impl.CustomerServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +24,7 @@ public class CustomerController {
 
     // login to account
     @PostMapping("/signin")
-    public ResponseEntity<SendDetailWrapperWithJwt> login(@Valid @RequestBody LoginCustomerWrapper loginCustomer){
+    public ResponseEntity<SendDetailDtoWithJwt> login(@Valid @RequestBody LoginCustomerDto loginCustomer){
         return customerService.login(loginCustomer);
     }
 
@@ -32,15 +32,20 @@ public class CustomerController {
     // create customer and account
 
     @PostMapping("/create")
-    public ResponseEntity<String> create(@Valid @RequestBody SignUpDetailWrapper signUpDetailWrapper){
-        return customerService.create(signUpDetailWrapper);
+    public ResponseEntity<String> create(@Valid @RequestBody SignUpDetailDto signUpDetailDto){
+        return customerService.create(signUpDetailDto);
     }
 
     // delete customer and account
 
-    @DeleteMapping("/delete")
-    public ResponseEntity<String> delete(@Valid @RequestBody LoginCustomerWrapper loginCustomerWrapper){
-        return customerService.deleteCustomer(loginCustomerWrapper);
+    @DeleteMapping("/delete/{customerId}")
+    public ResponseEntity<String> delete(@Valid @PathVariable Long customerId){
+        return customerService.deleteCustomer(customerId);
+    }
+
+    @GetMapping("/confirm")
+    public String confirmToken(@RequestParam String token){
+        return customerService.confirmToken(token);
     }
 
 

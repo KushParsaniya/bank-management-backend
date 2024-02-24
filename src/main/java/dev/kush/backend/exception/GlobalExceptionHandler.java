@@ -6,77 +6,71 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.time.LocalDateTime;
 
+import static org.springframework.http.HttpStatus.*;
+
 @RestControllerAdvice
-public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
+public class GlobalExceptionHandler {
 
     @ExceptionHandler(UserNotFoundException.class)
-    public final ResponseEntity<Object> handleUserNotFoundException(Exception ex, WebRequest request) throws Exception {
+    @ResponseStatus(NOT_FOUND)
+    public final ResponseEntity<Object> handleUserNotFoundException(UserNotFoundException ex, WebRequest request) throws Exception {
         ErrorDetails errorDetails = new ErrorDetails(
                 LocalDateTime.now(),
                 ex.getMessage(),
-                request.getDescription(false)
+                NOT_FOUND
         );
-        return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(errorDetails, NOT_FOUND);
     }
 
     @ExceptionHandler(BadRequestException.class)
-    public final ResponseEntity<Object> handleBadRequestException(Exception ex, WebRequest request) throws Exception {
+    @ResponseStatus(BAD_REQUEST)
+    public final ResponseEntity<Object> handleBadRequestException(BadRequestException ex, WebRequest request) throws Exception {
         ErrorDetails errorDetails = new ErrorDetails(
                 LocalDateTime.now(),
                 ex.getMessage(),
-                request.getDescription(false)
+                BAD_REQUEST
         );
-        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(errorDetails, BAD_REQUEST);
     }
 
     @ExceptionHandler(UnprocessableEntityException.class)
-    public final ResponseEntity<Object> handleUnprocessableEntityException(Exception ex, WebRequest request) throws Exception {
+    @ResponseStatus(UNPROCESSABLE_ENTITY)
+    public final ResponseEntity<Object> handleUnprocessableEntityException(UnprocessableEntityException ex, WebRequest request) throws Exception {
         ErrorDetails errorDetails = new ErrorDetails(
                 LocalDateTime.now(),
                 ex.getMessage(),
-                request.getDescription(false)
+                UNPROCESSABLE_ENTITY
         );
-        return new ResponseEntity<>(errorDetails, HttpStatus.UNPROCESSABLE_ENTITY);
+        return new ResponseEntity<>(errorDetails, UNPROCESSABLE_ENTITY);
     }
 
     @ExceptionHandler(ConflictException.class)
-    public final ResponseEntity<Object> handleConflictException(Exception ex, WebRequest request) throws Exception {
+    @ResponseStatus(CONFLICT)
+    public final ResponseEntity<Object> handleConflictException(ConflictException ex, WebRequest request) throws Exception {
         ErrorDetails errorDetails = new ErrorDetails(
                 LocalDateTime.now(),
                 ex.getMessage(),
-                request.getDescription(false)
+                CONFLICT
         );
-        return new ResponseEntity<>(errorDetails, HttpStatus.CONFLICT);
+        return new ResponseEntity<>(errorDetails, CONFLICT);
     }
 
 
     @ExceptionHandler(UnauthorizedUserException.class)
-    public final ResponseEntity<Object> handleUnauthorizedUserException(Exception ex, WebRequest request) throws Exception {
+    @ResponseStatus(UNAUTHORIZED)
+    public final ResponseEntity<Object> handleUnauthorizedUserException(UnauthorizedUserException ex, WebRequest request) throws Exception {
         ErrorDetails errorDetails = new ErrorDetails(
                 LocalDateTime.now(),
                 ex.getMessage(),
-                request.getDescription(false)
+                UNAUTHORIZED
         );
-        return new ResponseEntity<>(errorDetails, HttpStatus.UNAUTHORIZED);
-    }
-
-
-    @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
-
-        ErrorDetails errorDetails = new ErrorDetails(
-                LocalDateTime.now(),
-                "Total errors : " + ex.getErrorCount() + " First error : " + ex.getFieldError().getDefaultMessage(),
-                request.getDescription(false)
-        );
-
-        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
-
+        return new ResponseEntity<>(errorDetails, UNAUTHORIZED);
     }
 }

@@ -8,7 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import static jakarta.persistence.CascadeType.ALL;
+import static jakarta.persistence.CascadeType.*;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
@@ -24,7 +24,7 @@ public class Loan {
     private Long loanAmount;
     private Float interest;
 
-    @ManyToOne(cascade = ALL)
+    @ManyToOne(cascade =  {DETACH,MERGE,REFRESH,PERSIST})
     @JsonManagedReference
     private Account account;
 
