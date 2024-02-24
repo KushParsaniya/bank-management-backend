@@ -1,4 +1,4 @@
-package dev.kush.backend.customer.model;
+package dev.kush.backend.customer.dto;
 
 import dev.kush.backend.account.models.AccountType;
 import dev.kush.backend.account.models.TransactionWrapper;
@@ -13,7 +13,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class SendDetailWrapper {
+public class SendDetailDto {
     private java.lang.String username;
     private java.lang.String email;
     private Long accountId;

@@ -3,7 +3,7 @@ package dev.kush.backend.account.controller;
 import dev.kush.backend.account.models.DepositMoneyWrapper;
 import dev.kush.backend.account.models.TransferMoneyWrapper;
 import dev.kush.backend.account.service.AccountService;
-import dev.kush.backend.customer.model.SendDetailWrapper;
+import dev.kush.backend.customer.dto.SendDetailDto;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +23,7 @@ public class AccountController {
 
 
     @GetMapping("/getByAccountId/{accountId}")
-    public ResponseEntity<SendDetailWrapper> getByAccountId(@PathVariable Long accountId) {
+    public ResponseEntity<SendDetailDto> getByAccountId(@PathVariable Long accountId) {
         return accountService.getByAccountId(accountId);
     }
 

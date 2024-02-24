@@ -17,7 +17,7 @@ import lombok.Setter;
 
 import java.util.List;
 
-import static jakarta.persistence.CascadeType.ALL;
+import static jakarta.persistence.CascadeType.*;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity

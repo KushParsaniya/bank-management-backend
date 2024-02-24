@@ -11,7 +11,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import static jakarta.persistence.CascadeType.ALL;
+import static jakarta.persistence.CascadeType.*;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
@@ -28,7 +28,7 @@ public class CreditCard {
     private Long remainingLimit;
     private String expirationDate;
 
-    @ManyToOne(cascade = ALL)
+    @ManyToOne(cascade = {DETACH,MERGE,REFRESH,PERSIST})
     @JsonManagedReference
     private Account account;
 

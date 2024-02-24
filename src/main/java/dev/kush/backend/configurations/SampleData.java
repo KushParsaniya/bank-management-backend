@@ -14,9 +14,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.time.LocalDate;
 import java.util.List;
 
-@Configuration
+//@Configuration
 public class SampleData {
-    @Bean
+//    @Bean
     CommandLineRunner commandLineRunner(CustomerRepository customerRepository, AccountRepository accountRepository, PasswordEncoder passwordEncoder){
         return args -> {
             Customer customer1 = new Customer("Kush Parsaniya","kush@gmail.com", passwordEncoder.encode("kush1234"), "ROLE_ADMIN",false,true);

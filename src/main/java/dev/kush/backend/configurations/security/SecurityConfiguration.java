@@ -2,6 +2,7 @@ package dev.kush.backend.configurations.security;
 
 import dev.kush.backend.customer.service.SecuredCustomerService;
 import dev.kush.backend.jwt.JwtFilter;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,9 +12,11 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -21,14 +24,12 @@ import java.util.List;
 @EnableWebSecurity
 public class SecurityConfiguration {
 
-    private final SecuredCustomerService securedCustomerService;
     private final JwtFilter jwtFilter;
 
     private final AuthenticationProvider authenticationProvider;
 
     @Autowired
-    public SecurityConfiguration(SecuredCustomerService securedCustomerService, JwtFilter jwtFilter, AuthenticationProvider authenticationProvider) {
-        this.securedCustomerService = securedCustomerService;
+    public SecurityConfiguration(JwtFilter jwtFilter, AuthenticationProvider authenticationProvider) {
         this.jwtFilter = jwtFilter;
         this.authenticationProvider = authenticationProvider;
     }
@@ -50,10 +51,14 @@ public class SecurityConfiguration {
                                         "/account/info/loans/deleteLoanRequest/**",
                                         "/account/info/loans/getAllLoanRequests",
                                         "account/info/transfer",
-                                        "account/info/deposit"
-                                        ).hasRole("ADMIN")
-                                .requestMatchers("/create", "/delete","/login","/signin").permitAll()
-                                .anyRequest().hasAnyRole("ADMIN","USER")
+                                        "account/info/deposit",
+                                        "/swagger-ui.html"
+                                ).hasRole("ADMIN")
+                                .requestMatchers("/create", "/delete", "/login", "/signin","/confirm").permitAll()
+                                .anyRequest().hasAnyRole("ADMIN", "USER")
+                )
+                .exceptionHandling(exception ->
+                        exception.accessDeniedHandler(accessDeniedHandler())
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .authenticationProvider(authenticationProvider)
@@ -79,6 +84,20 @@ public class SecurityConfiguration {
         cors.setAllowCredentials(true);
 
         return cors;
+    }
+
+
+    @Bean
+    public AccessDeniedHandler accessDeniedHandler() {
+        return (request, response, ex) -> {
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+
+            response.setContentType("application/json");
+
+            String message = "{\"timestamp\":\"" + LocalDateTime.now() + "\",\"status\":\"" + HttpServletResponse.SC_FORBIDDEN + "\" , \"message\":\"You are not authorized to access this resource.\"}";
+
+            response.getWriter().write(message);
+        };
     }
 
 

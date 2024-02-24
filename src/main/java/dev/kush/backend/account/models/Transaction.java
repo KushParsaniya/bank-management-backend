@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import static jakarta.persistence.CascadeType.ALL;
+import static jakarta.persistence.CascadeType.*;
 
 @Entity
 @Getter
@@ -24,7 +24,7 @@ public class Transaction {
     @Min(value = 0,message = "amount should be greater than zero")
     private Long amount;
 
-    @ManyToOne(cascade = ALL)
+    @ManyToOne(cascade =  {DETACH,MERGE,REFRESH,PERSIST})
     @JsonManagedReference
     private Account account;
 

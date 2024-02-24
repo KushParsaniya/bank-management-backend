@@ -1,14 +1,18 @@
 package dev.kush.backend.customer.service;
 
-import dev.kush.backend.customer.model.LoginCustomerWrapper;
-import dev.kush.backend.customer.model.SendDetailWrapperWithJwt;
-import dev.kush.backend.customer.model.SignUpDetailWrapper;
+import dev.kush.backend.customer.dto.LoginCustomerDto;
+import dev.kush.backend.customer.dto.SendDetailDtoWithJwt;
+import dev.kush.backend.customer.dto.SignUpDetailDto;
 import org.springframework.http.ResponseEntity;
 
 public interface CustomerService {
-    ResponseEntity<SendDetailWrapperWithJwt> login(LoginCustomerWrapper loginCustomer);
+    ResponseEntity<SendDetailDtoWithJwt> login(LoginCustomerDto loginCustomer);
 
-    ResponseEntity<String> create(SignUpDetailWrapper signUpDetailWrapper);
+    ResponseEntity<String> create(SignUpDetailDto signUpDetailDto);
 
-    ResponseEntity<String> deleteCustomer(LoginCustomerWrapper loginCustomerWrapper);
+    ResponseEntity<String> deleteCustomer(Long customerId);
+
+    void enableAccount(String email);
+
+    String confirmToken(String token);
 }
