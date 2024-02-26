@@ -80,7 +80,7 @@ public class SecurityConfiguration {
         cors.setAllowedOrigins(List.of("https://easybankdev.vercel.app","http://localhost:3000"));
         cors.setMaxAge(3600L);
         cors.setAllowedMethods(List.of("*"));
-        cors.setExposedHeaders(List.of("*"));
+        cors.setExposedHeaders(List.of("Authorization"));
         cors.setAllowCredentials(true);
 
         return cors;
