@@ -77,7 +77,7 @@ public class SecurityConfiguration {
     @Bean
     public CorsConfiguration corsConfiguration() {
         CorsConfiguration cors = new CorsConfiguration();
-        cors.setAllowedOrigins(List.of("https://easybankdev.vercel.app"));
+        cors.setAllowedOrigins(List.of("https://easybankdev.vercel.app","http://localhost:3000));
         cors.setMaxAge(3600L);
         cors.setAllowedMethods(List.of("*"));
         cors.setExposedHeaders(List.of("Authorization"));
