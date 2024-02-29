@@ -12,7 +12,7 @@ public class CorsConfig implements WebMvcConfigurer {
         registry.addMapping("/**")
                 .allowedOrigins("http://localhost:3000","https://easybankdev.vercel.app")
                 .allowedMethods("*")
-                .allowedHeaders("Authorization")
+                .allowedHeaders("*")
                 .maxAge(3600L);
     }
 
