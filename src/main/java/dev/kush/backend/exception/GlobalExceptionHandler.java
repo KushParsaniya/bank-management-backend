@@ -73,4 +73,15 @@ public class GlobalExceptionHandler {
         );
         return new ResponseEntity<>(errorDetails, UNAUTHORIZED);
     }
+
+    @ExceptionHandler(FileNotFoundException.class)
+    @ResponseStatus(NOT_FOUND)
+    public final ResponseEntity<Object> handleFileNotFound(FileNotFoundException ex, WebRequest request) throws Exception {
+        ErrorDetails errorDetails = new ErrorDetails(
+                LocalDateTime.now(),
+                ex.getMessage(),
+                NOT_FOUND
+        );
+        return new ResponseEntity<>(errorDetails, NOT_FOUND);
+    }
 }

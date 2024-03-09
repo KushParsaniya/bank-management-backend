@@ -1,6 +1,5 @@
 package dev.kush.backend.configurations.security;
 
-import dev.kush.backend.customer.service.SecuredCustomerService;
 import dev.kush.backend.jwt.JwtFilter;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,15 +13,8 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Map;
 
 
 @Configuration
@@ -53,7 +45,6 @@ public class SecurityConfiguration {
                                         "/account/info/loans/createLoan/**",
                                         "/account/info/loans/deleteLoanRequest/**",
                                         "/account/info/loans/getAllLoanRequests",
-                                        "account/info/transfer",
                                         "account/info/deposit",
                                         "/swagger-ui.html"
                                 ).hasRole("ADMIN")
