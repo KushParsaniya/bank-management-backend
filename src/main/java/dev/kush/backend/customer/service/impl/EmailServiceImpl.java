@@ -34,7 +34,7 @@ public class EmailServiceImpl implements EmailService {
             helper.setText(emailDetails.msgBody(),true);
 
             javaMailSender.send(message);
-            return "Account created successfully please check your email for conformation!";
+            return "Successfully sent email please check your mail box. ";
 
         } catch (Exception e){
             return "error sending email.";
